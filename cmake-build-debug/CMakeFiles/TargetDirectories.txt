@@ -1,0 +1,5 @@
+/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug/CMakeFiles/tests.dir
+/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug/CMakeFiles/gtest.dir
+/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug/CMakeFiles/Projekt.dir
+/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug/CMakeFiles/rebuild_cache.dir
