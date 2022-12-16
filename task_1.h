@@ -27,6 +27,23 @@ public:
     }
 };
 
+class Time{
+    int hours = 0;
+    int minutes = 0;
+public:
+    Time();
+    Time(int hours0, int minutes0);
+    bool setTime(int hours0, int minutes0);
+    std::string getTime() const;
+    std::pair<int,int> getTimePair() { return std::make_pair(hours, minutes);};
+    Time operator +(Time &other);
+    Time operator -(Time &other);
+    Time operator +=(Time &other);
+    Time operator -=(Time &other);
+    bool operator <(Time &other);
+    bool operator >(Time &other);
+    bool operator ==(Time &other);
+};
 
 class BusStop{
     int number = -1;
@@ -37,6 +54,12 @@ public:
     BusStop(const std::string& stop_name, int num);
     bool operator == (BusStop const &b1){
         if(b1.getName() == name && b1.getStopNumber() == number){
+            return true;
+        }
+        return false;
+    };
+    bool operator != (BusStop const &b1){
+        if(b1.getName() != name || b1.getStopNumber() != number){
             return true;
         }
         return false;
@@ -53,7 +76,7 @@ public:
 
 class BusLine{
     int direction = 0; //which stop is a starting point (-1 last one to first one, 1 => first to last in stops list, 0 => both ways)
-    std::vector<BusStop> stops;
+    std::vector<std::pair<BusStop, int>> stops;
     int interval_workdays = -1;
     int interval_weekends = -1;
     int line_num = -1;
@@ -65,7 +88,7 @@ public:
     bool changeDirection(int new_direct);
     bool isLineInOrder() const {return status;};
     std::string getStopsString() const;
-    std::vector<BusStop> getStopVector() const { return stops;};
+    std::vector<std::pair<BusStop,int>> getStopVector() const { return stops;};
     bool changeStatus(); //cannot change if some of the variables is negative or not initialized except for stops
     bool setIntervalWorkdays(int work_int);
     bool setIntervalWeekends(int wknd_int);
@@ -75,6 +98,8 @@ public:
     int getLineNum() const {return line_num;};
     int getIntervalWorkdays() const {return interval_workdays;};
     int getIntervalWeekends() const{return interval_weekends;};
-    bool addStop(BusStop &new_stop) ;
-    bool removeStop(BusStop &stop_rem) ;
+    bool addStop(int position, BusStop &new_stop, int mins_from_prev, int mins_from_next) ; //inserts a new stop at the postion in vector
+    bool removeStop(BusStop &stop_rem, int mins_prev_to_next = -1); //if mins_prev_to_next not sepcified then just uses sum of the neighbouring elements around stop_rem
+    std::vector<std::pair<BusStop, Time>> getEarliestFromStop(BusStop &start, BusStop &dest, Time &time, bool weekend=false);//return vector of stops and their scheduled departure
+    std::string getEarliestFromStopString(BusStop &start, BusStop &dest, Time &time, bool weekend=false);
 };

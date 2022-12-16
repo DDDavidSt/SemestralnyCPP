@@ -11,6 +11,34 @@
 using namespace std;
 using namespace ::testing;
 
+TEST(TestFirstTask, Time){
+    Time cas1;
+    ASSERT_EQ("00:00", cas1.getTime());
+    Time cass2(0,5);
+    ASSERT_EQ("23:55", (cas1-cass2).getTime());
+    std::pair<int, int> kk;
+    kk = std::make_pair(0,0);
+    ASSERT_EQ(kk, cas1.getTimePair());
+    Time cas2(9,10);
+    Time cas3(2,30);
+    ASSERT_EQ("11:40", (cas2 + cas3).getTime());
+    Time cas4(20, 50);
+    ASSERT_EQ("06:00", (cas2+ cas4).getTime());
+    Time cas5(21, 55);
+    ASSERT_EQ("22:55", (cas4 - cas5).getTime());
+    cas5 += cas2;
+    ASSERT_EQ("07:05", (cas5).getTime());
+    cas5 -= cas2;
+    Time cassss5(21,55);
+    ASSERT_EQ("21:55", cas5.getTime());
+    ASSERT_TRUE(cas5 > cas4);
+    ASSERT_TRUE(cas2 < cas4);
+    ASSERT_TRUE(cas5 == cassss5);
+    ASSERT_FALSE(cas5 < cas4);
+    ASSERT_FALSE(cas2 > cas4);
+    ASSERT_FALSE(cas4 == cas1);
+}
+
 TEST(TestFirstTask, KorektnaZastavka) {
     BusStop cminter("Cintorin Slavicie", 2);
     ASSERT_EQ("Cintorin Slavicie", cminter.getName());
@@ -119,20 +147,19 @@ TEST(TestFirstTask, AddStops){
     BusStop zoo("Zoo", 2);
     BusStop lanf("Lanfranconi", 3);
     BusStop kralud("Kralovske udolie", 4);
-    BusStop chaso("Chatam sofer", 5);
     tridevat.setIntervalWeekends(40);
     tridevat.setIntervalWorkdays(60);
 
-    tridevat.addStop(cminter);
+    ASSERT_TRUE(tridevat.addStop(-1,cminter,0,0));
     ASSERT_EQ("Cintorin Slavicie", tridevat.getStopsString());
-    tridevat.addStop(zoo);
-    tridevat.addStop(lanf);
-    tridevat.addStop(kralud);
-    ASSERT_EQ("Cintorin Slavicie --> Zoo --> Lanfranconi --> Kralovske udolie", tridevat.getStopsString());
+    tridevat.addStop(-1,zoo,10,0);
+    tridevat.addStop(-1,lanf,13,0);
+    tridevat.addStop(-1,kralud,6,0);
+    ASSERT_EQ("Cintorin Slavicie -10-> Zoo -13-> Lanfranconi -6-> Kralovske udolie", tridevat.getStopsString());
     tridevat.changeDirection(0);
-    ASSERT_EQ("Cintorin Slavicie <--> Zoo <--> Lanfranconi <--> Kralovske udolie", tridevat.getStopsString());
+    ASSERT_EQ("Cintorin Slavicie <-10-> Zoo <-13-> Lanfranconi <-6-> Kralovske udolie", tridevat.getStopsString());
     tridevat.changeDirection(-1);
-    ASSERT_EQ("Cintorin Slavicie <-- Zoo <-- Lanfranconi <-- Kralovske udolie", tridevat.getStopsString());
+    ASSERT_EQ("Kralovske udolie -6-> Lanfranconi -13-> Zoo -10-> Cintorin Slavicie", tridevat.getStopsString());
 
 }
 
@@ -148,20 +175,29 @@ TEST(TestFirstTask, RemoveStops){
     ASSERT_FALSE(tridevat.isLineInOrder());
     ASSERT_TRUE(tridevat.changeStatus());
     ASSERT_TRUE(tridevat.isLineInOrder());
-    tridevat.addStop(cminter);
+    tridevat.addStop(-1,cminter,0,0);
     ASSERT_EQ("Cintorin Slavicie", tridevat.getStopsString());
-    tridevat.addStop(zoo);
-    tridevat.addStop(lanf);
-    tridevat.addStop(kralud);
-    ASSERT_EQ("Cintorin Slavicie --> Zoo --> Lanfranconi --> Kralovske udolie", tridevat.getStopsString());
-    tridevat.removeStop(kralud);
-    ASSERT_EQ("Cintorin Slavicie --> Zoo --> Lanfranconi", tridevat.getStopsString());
+    tridevat.addStop(-1,zoo,10,0);
+    tridevat.addStop(-1,lanf,13,0);
+    ASSERT_EQ("Cintorin Slavicie -10-> Zoo -13-> Lanfranconi", tridevat.getStopsString());
+    tridevat.addStop(1,kralud,6,9);
+    ASSERT_EQ("Cintorin Slavicie -6-> Kralovske udolie -9-> Zoo -13-> Lanfranconi", tridevat.getStopsString());
+    ASSERT_FALSE(tridevat.addStop(340,kralud,6,9));
+    ASSERT_FALSE(tridevat.addStop(1,kralud,6,9));
+    tridevat.removeStop(kralud,10);
+    ASSERT_EQ("Cintorin Slavicie -10-> Zoo -13-> Lanfranconi", tridevat.getStopsString());
     tridevat.changeDirection(0);
-    tridevat.removeStop(lanf);
-    ASSERT_EQ("Cintorin Slavicie <--> Zoo", tridevat.getStopsString());
+    tridevat.removeStop(lanf,0);
+    ASSERT_EQ("Cintorin Slavicie <-10-> Zoo", tridevat.getStopsString());
     tridevat.changeDirection(-1);
-    tridevat.addStop(chaso);
-    ASSERT_EQ("Cintorin Slavicie <-- Zoo <-- Chatam Sofer", tridevat.getStopsString());
+    tridevat.addStop(2,chaso,20,0);
+    ASSERT_EQ("Zoo -10-> Cintorin Slavicie -20-> Chatam Sofer", tridevat.getStopsString());
+    tridevat.removeStop(zoo,0);
+    tridevat.removeStop(cminter,0);
+    ASSERT_EQ("Chatam Sofer", tridevat.getStopsString());
+    tridevat.removeStop(chaso, 0);
+    ASSERT_EQ("", tridevat.getStopsString());
+
 }
 
 TEST(TestFirstTask, BadBusLIne){
@@ -307,4 +343,84 @@ TEST(TestFirstTask, TimeTable){
               "21| 20\n"
               "22| 0 40\n"
               "23| 20\n", tridevat.getTimetable());
+}
+
+TEST(TestFirstTask, getNearestConn){
+    BusLine tridevat(39, 1);
+    BusStop cminter("Cintorin Slavicie", 1);
+    BusStop zoo("Zoo", 2);
+    BusStop lanf("Lanfranconi", 3);
+    BusStop kralud("Kralovske udolie", 4);
+    BusStop chaso("Chatam Sofer", 5);
+    tridevat.setIntervalWeekends(40);
+    tridevat.setIntervalWorkdays(22);
+    tridevat.addStop(-1,cminter,0,0);
+    tridevat.addStop(-1,zoo,10,0);
+    tridevat.addStop(-1,lanf,13,0);
+    tridevat.addStop(1,kralud,6,9);
+    ASSERT_EQ("Cintorin Slavicie -6-> Kralovske udolie -9-> Zoo -13-> Lanfranconi", tridevat.getStopsString());
+    Time cas1(0,44);
+    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie -00:09-> (00:59)Zoo", tridevat.getEarliestFromStopString(cminter,zoo,cas1));
+    tridevat.changeDirection(-1);
+    ASSERT_EQ("(00:44)Lanfranconi -00:13-> (00:57)Zoo -00:09-> (01:06)Kralovske udolie -00:06-> (01:12)Cintorin Slavicie", tridevat.getEarliestFromStopString(lanf, cminter,cas1));
+    ASSERT_EQ("(00:57)Zoo -00:09-> (01:06)Kralovske udolie", tridevat.getEarliestFromStopString(zoo, kralud,cas1));
+    tridevat.changeDirection(1);
+    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie -00:09-> (00:59)Zoo", tridevat.getEarliestFromStopString(cminter,zoo,cas1));
+
+    tridevat.changeDirection(0);
+    tridevat.addStop(-1, chaso, 9,0);
+    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie -00:09-> (00:59)Zoo -00:13-> (01:12)Lanfranconi", tridevat.getEarliestFromStopString(cminter,lanf,cas1));
+    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie", tridevat.getEarliestFromStopString(cminter,kralud,cas1));
+    ASSERT_EQ("(00:50)Kralovske udolie -00:09-> (00:59)Zoo", tridevat.getEarliestFromStopString(kralud,zoo,cas1));
+    ASSERT_EQ("(00:44)Chatam Sofer -00:09-> (00:53)Lanfranconi -00:13-> (01:06)Zoo -00:09-> (01:15)Kralovske udolie -00:06-> (01:21)Cintorin Slavicie", tridevat.getEarliestFromStopString(chaso,cminter,cas1));
+    ASSERT_EQ("(00:44)Zoo -00:09-> (00:53)Kralovske udolie", tridevat.getEarliestFromStopString(zoo,kralud,cas1));
+    ASSERT_EQ("(00:50)Kralovske udolie -00:09-> (00:59)Zoo", tridevat.getEarliestFromStopString(kralud, zoo,cas1));
+    ASSERT_EQ("(01:20)Chatam Sofer -00:09-> (01:29)Lanfranconi -00:13-> (01:42)Zoo -00:09-> (01:51)Kralovske udolie -00:06-> (01:57)Cintorin Slavicie", tridevat.getEarliestFromStopString(chaso, cminter,cas1, true));
+    ASSERT_EQ("(01:02)Zoo -00:09-> (01:11)Kralovske udolie", tridevat.getEarliestFromStopString(zoo, kralud,cas1, true));
+
+
+}
+
+TEST(TestFirstTask, NastyConnections){
+    BusLine tridevat(39, 1);
+    BusStop cminter("Cintorin Slavicie", 1);
+    BusStop zoo("Zoo", 2);
+    BusStop lanf("Lanfranconi", 3);
+    BusStop kralud("Kralovske udolie", 4);
+    BusStop chaso("Chatam Sofer", 5);
+    tridevat.setIntervalWeekends(40);
+    tridevat.setIntervalWorkdays(22);
+    tridevat.addStop(-1,cminter,0,0);
+    tridevat.addStop(-1,zoo,10,0);
+    tridevat.addStop(-1,lanf,13,0);
+    tridevat.addStop(1,kralud,6,9);
+
+    Time cas1(0,44);
+
+    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie -00:09-> (00:59)Zoo -00:13-> (01:12)Lanfranconi", tridevat.getEarliestFromStopString(cminter, lanf, cas1));
+
+    try{
+        tridevat.getEarliestFromStopString(cminter, chaso, cas1);
+    }catch (Exception &e){
+        ASSERT_EQ("Given destination is not in Line number 39", e.message());
+    }
+    try{
+        tridevat.getEarliestFromStopString(chaso, cminter, cas1);
+    }catch (Exception &e){  ASSERT_EQ("Given start point is not in Line number 39", e.message());
+    }
+    tridevat.changeDirection(0);
+    tridevat.removeStop(zoo);
+    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie -00:22-> (01:12)Lanfranconi", tridevat.getEarliestFromStopString(cminter, lanf, cas1));
+    try{
+        tridevat.getEarliestFromStopString(cminter, lanf, cas1);
+    }catch (Exception &e){
+        ASSERT_EQ("Given destination is not in Line number 39", e.message());
+    }
+    try{
+        tridevat.getEarliestFromStopString(chaso, lanf, cas1);
+    }catch (Exception &e){
+        ASSERT_EQ("Given start point is not in Line number 39", e.message());
+    }
+    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie", tridevat.getEarliestFromStopString(cminter, kralud, cas1));
+    ASSERT_EQ("(00:44)Cintorin Slavicie", tridevat.getEarliestFromStopString(cminter, cminter, cas1));
 }
