@@ -202,9 +202,13 @@ std::vector<std::pair<BusStop, Time>> BusLine::getEarliestFromStop(BusStop &star
         if(it == stops.end()){
             throw Exception("Given start point is not in Line number " + std::to_string(line_num));
         }
+        if(time.getTimePair().first == 23 && (fromOrigToStart + interval).getTimePair().first == 0 ){
+            time.setTime(0,0);
+        }
         while (fromOrigToStart < time) {
             fromOrigToStart += interval;
         }
+
         for (; it != stops.end() && (it-1)->first != dest; ++it) {
             result.push_back(std::make_pair(it->first, fromOrigToStart));
             Time delta((it + 1)->second / 60, (it + 1)->second % 60);

@@ -395,9 +395,9 @@ TEST(TestFirstTask, NastyConnections){
     tridevat.addStop(-1,lanf,13,0);
     tridevat.addStop(1,kralud,6,9);
 
-    Time cas1(0,44);
+    Time cas1(23,59);
 
-    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie -00:09-> (00:59)Zoo -00:13-> (01:12)Lanfranconi", tridevat.getEarliestFromStopString(cminter, lanf, cas1));
+    ASSERT_EQ("(00:00)Cintorin Slavicie -00:06-> (00:06)Kralovske udolie -00:09-> (00:15)Zoo -00:13-> (00:28)Lanfranconi", tridevat.getEarliestFromStopString(cminter, lanf, cas1));
 
     try{
         tridevat.getEarliestFromStopString(cminter, chaso, cas1);
@@ -410,7 +410,7 @@ TEST(TestFirstTask, NastyConnections){
     }
     tridevat.changeDirection(0);
     tridevat.removeStop(zoo);
-    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie -00:22-> (01:12)Lanfranconi", tridevat.getEarliestFromStopString(cminter, lanf, cas1));
+    ASSERT_EQ("(00:00)Cintorin Slavicie -00:06-> (00:06)Kralovske udolie -00:22-> (00:28)Lanfranconi", tridevat.getEarliestFromStopString(cminter, lanf, cas1));
     try{
         tridevat.getEarliestFromStopString(cminter, lanf, cas1);
     }catch (Exception &e){
@@ -421,6 +421,6 @@ TEST(TestFirstTask, NastyConnections){
     }catch (Exception &e){
         ASSERT_EQ("Given start point is not in Line number 39", e.message());
     }
-    ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie", tridevat.getEarliestFromStopString(cminter, kralud, cas1));
-    ASSERT_EQ("(00:44)Cintorin Slavicie", tridevat.getEarliestFromStopString(cminter, cminter, cas1));
+    ASSERT_EQ("(00:00)Cintorin Slavicie -00:06-> (00:06)Kralovske udolie", tridevat.getEarliestFromStopString(cminter, kralud, cas1));
+    ASSERT_EQ("(00:00)Cintorin Slavicie", tridevat.getEarliestFromStopString(cminter, cminter, cas1));
 }
