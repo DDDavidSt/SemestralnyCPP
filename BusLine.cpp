@@ -1,13 +1,12 @@
 //
-// Created by david on 14/12/22.
+// Created by david on 18/12/22.
 //
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <sstream>
 #include <iomanip>
 #include <fstream>
-#include "task_1.h"
+#include "BusLine.h"
 
 BusLine::BusLine(int number, int direct) {
     if(number <= 0){
@@ -47,7 +46,6 @@ bool BusLine::changeDirection(int new_direct) {
     if(new_direct != direction && new_direct != 0){
         std::vector<std::pair<BusStop, int>> stops_reversed;
         auto it = stops.end()-1;
-        Time time;
         stops_reversed.push_back(std::make_pair(it->first, 0));
         --it;
         for(; it != stops.begin()-1; --it){
@@ -121,8 +119,8 @@ std::string BusLine::getStopsString() const{
 
 bool BusLine::addStop(int position, BusStop &new_stop, int mins_from_prev, int mins_from_next) {
     if(new_stop.getName().empty() || position < -1 || position > int(stops.size())
-        || position == 0 && stops.size() != 0 &&mins_from_next <= 0 || position == stops.size()-1 && stops.size() != 0 && mins_from_prev <=0
-            || position == -1 && stops.size() != 0 && mins_from_prev <=0){
+       || position == 0 && stops.size() != 0 &&mins_from_next <= 0 || position == stops.size()-1 && stops.size() != 0 && mins_from_prev <=0
+       || position == -1 && stops.size() != 0 && mins_from_prev <=0){
         return false;
     }
     for(auto it = stops.begin(); it != stops.end(); ++it){ //check if not already in list

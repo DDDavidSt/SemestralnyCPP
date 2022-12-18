@@ -41,122 +41,104 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/cmake-build-debug/
 # =============================================================================
-# Object build statements for OBJECT_LIBRARY target tests
-
-
-#############################################
-# Order-only phony target for tests
-
-build cmake_object_order_depends_target_tests: phony || CMakeFiles/tests.dir
-
-build CMakeFiles/tests.dir/testy_1.cpp.o: CXX_COMPILER__tests_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/testy_1.cpp || cmake_object_order_depends_target_tests
-  DEP_FILE = CMakeFiles/tests.dir/testy_1.cpp.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/tests.dir
-  OBJECT_FILE_DIR = CMakeFiles/tests.dir
-
-
-
-#############################################
-# Object library tests
-
-build tests: phony CMakeFiles/tests.dir/testy_1.cpp.o
-
-# =============================================================================
-# Object build statements for OBJECT_LIBRARY target gtest
-
-
-#############################################
-# Order-only phony target for gtest
-
-build cmake_object_order_depends_target_gtest: phony || CMakeFiles/gtest.dir
-
-build CMakeFiles/gtest.dir/GoogleTest/gtest-death-test.cc.o: CXX_COMPILER__gtest_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-death-test.cc || cmake_object_order_depends_target_gtest
-  DEP_FILE = CMakeFiles/gtest.dir/GoogleTest/gtest-death-test.cc.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/gtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/gtest.dir/GoogleTest
-
-build CMakeFiles/gtest.dir/GoogleTest/gtest-filepath.cc.o: CXX_COMPILER__gtest_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-filepath.cc || cmake_object_order_depends_target_gtest
-  DEP_FILE = CMakeFiles/gtest.dir/GoogleTest/gtest-filepath.cc.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/gtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/gtest.dir/GoogleTest
-
-build CMakeFiles/gtest.dir/GoogleTest/gtest-port.cc.o: CXX_COMPILER__gtest_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-port.cc || cmake_object_order_depends_target_gtest
-  DEP_FILE = CMakeFiles/gtest.dir/GoogleTest/gtest-port.cc.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/gtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/gtest.dir/GoogleTest
-
-build CMakeFiles/gtest.dir/GoogleTest/gtest-printers.cc.o: CXX_COMPILER__gtest_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-printers.cc || cmake_object_order_depends_target_gtest
-  DEP_FILE = CMakeFiles/gtest.dir/GoogleTest/gtest-printers.cc.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/gtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/gtest.dir/GoogleTest
-
-build CMakeFiles/gtest.dir/GoogleTest/gtest-test-part.cc.o: CXX_COMPILER__gtest_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-test-part.cc || cmake_object_order_depends_target_gtest
-  DEP_FILE = CMakeFiles/gtest.dir/GoogleTest/gtest-test-part.cc.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/gtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/gtest.dir/GoogleTest
-
-build CMakeFiles/gtest.dir/GoogleTest/gtest-typed-test.cc.o: CXX_COMPILER__gtest_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-typed-test.cc || cmake_object_order_depends_target_gtest
-  DEP_FILE = CMakeFiles/gtest.dir/GoogleTest/gtest-typed-test.cc.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/gtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/gtest.dir/GoogleTest
-
-build CMakeFiles/gtest.dir/GoogleTest/gtest.cc.o: CXX_COMPILER__gtest_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest.cc || cmake_object_order_depends_target_gtest
-  DEP_FILE = CMakeFiles/gtest.dir/GoogleTest/gtest.cc.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/gtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/gtest.dir/GoogleTest
-
-build CMakeFiles/gtest.dir/GoogleTest/gtest_main.cc.o: CXX_COMPILER__gtest_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest_main.cc || cmake_object_order_depends_target_gtest
-  DEP_FILE = CMakeFiles/gtest.dir/GoogleTest/gtest_main.cc.o.d
-  FLAGS = -g -std=gnu++17
-  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
-  OBJECT_DIR = CMakeFiles/gtest.dir
-  OBJECT_FILE_DIR = CMakeFiles/gtest.dir/GoogleTest
-
-
-
-#############################################
-# Object library gtest
-
-build gtest: phony CMakeFiles/gtest.dir/GoogleTest/gtest-death-test.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-filepath.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-port.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-printers.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-test-part.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-typed-test.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest_main.cc.o
-
-# =============================================================================
 # Object build statements for EXECUTABLE target Projekt
 
 
 #############################################
 # Order-only phony target for Projekt
 
-build cmake_object_order_depends_target_Projekt: phony || cmake_object_order_depends_target_gtest cmake_object_order_depends_target_tests
+build cmake_object_order_depends_target_Projekt: phony || CMakeFiles/Projekt.dir
 
-build CMakeFiles/Projekt.dir/task_1.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/task_1.cpp || cmake_object_order_depends_target_Projekt
-  DEP_FILE = CMakeFiles/Projekt.dir/task_1.cpp.o.d
-  FLAGS = -g -Wall -Wextra -Wshadow -Wconversion -Wpedantic -pedantic -std=gnu++17
+build CMakeFiles/Projekt.dir/side_classes.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/side_classes.cpp || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/side_classes.cpp.o.d
+  FLAGS = -g -std=gnu++14
   INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
   OBJECT_DIR = CMakeFiles/Projekt.dir
   OBJECT_FILE_DIR = CMakeFiles/Projekt.dir
 
-build CMakeFiles/Projekt.dir/task_2.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/task_2.cpp || cmake_object_order_depends_target_Projekt
-  DEP_FILE = CMakeFiles/Projekt.dir/task_2.cpp.o.d
-  FLAGS = -g -Wall -Wextra -Wshadow -Wconversion -Wpedantic -pedantic -std=gnu++17
+build CMakeFiles/Projekt.dir/BusStop.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/BusStop.cpp || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/BusStop.cpp.o.d
+  FLAGS = -g -std=gnu++14
   INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
   OBJECT_DIR = CMakeFiles/Projekt.dir
   OBJECT_FILE_DIR = CMakeFiles/Projekt.dir
+
+build CMakeFiles/Projekt.dir/BusLine.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/BusLine.cpp || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/BusLine.cpp.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir
+
+build CMakeFiles/Projekt.dir/TestBusLine.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/TestBusLine.cpp || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/TestBusLine.cpp.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir
+
+build CMakeFiles/Projekt.dir/TestSideClassesAndBusStop.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/TestSideClassesAndBusStop.cpp || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/TestSideClassesAndBusStop.cpp.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir
+
+build CMakeFiles/Projekt.dir/GoogleTest/gtest-death-test.cc.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-death-test.cc || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/GoogleTest/gtest-death-test.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir/GoogleTest
+
+build CMakeFiles/Projekt.dir/GoogleTest/gtest-filepath.cc.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-filepath.cc || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/GoogleTest/gtest-filepath.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir/GoogleTest
+
+build CMakeFiles/Projekt.dir/GoogleTest/gtest-port.cc.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-port.cc || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/GoogleTest/gtest-port.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir/GoogleTest
+
+build CMakeFiles/Projekt.dir/GoogleTest/gtest-printers.cc.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-printers.cc || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/GoogleTest/gtest-printers.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir/GoogleTest
+
+build CMakeFiles/Projekt.dir/GoogleTest/gtest-test-part.cc.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-test-part.cc || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/GoogleTest/gtest-test-part.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir/GoogleTest
+
+build CMakeFiles/Projekt.dir/GoogleTest/gtest-typed-test.cc.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest-typed-test.cc || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/GoogleTest/gtest-typed-test.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir/GoogleTest
+
+build CMakeFiles/Projekt.dir/GoogleTest/gtest.cc.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest.cc || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/GoogleTest/gtest.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir/GoogleTest
+
+build CMakeFiles/Projekt.dir/GoogleTest/gtest_main.cc.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/GoogleTest/gtest_main.cc || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/GoogleTest/gtest_main.cc.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir/GoogleTest
 
 
 # =============================================================================
@@ -166,11 +148,11 @@ build CMakeFiles/Projekt.dir/task_2.cpp.o: CXX_COMPILER__Projekt_Debug /home/dav
 #############################################
 # Link the executable Projekt
 
-build Projekt: CXX_EXECUTABLE_LINKER__Projekt_Debug CMakeFiles/gtest.dir/GoogleTest/gtest-death-test.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-filepath.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-port.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-printers.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-test-part.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest-typed-test.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest.cc.o CMakeFiles/gtest.dir/GoogleTest/gtest_main.cc.o CMakeFiles/tests.dir/testy_1.cpp.o CMakeFiles/Projekt.dir/task_1.cpp.o CMakeFiles/Projekt.dir/task_2.cpp.o || gtest tests
+build Projekt: CXX_EXECUTABLE_LINKER__Projekt_Debug CMakeFiles/Projekt.dir/side_classes.cpp.o CMakeFiles/Projekt.dir/BusStop.cpp.o CMakeFiles/Projekt.dir/BusLine.cpp.o CMakeFiles/Projekt.dir/TestBusLine.cpp.o CMakeFiles/Projekt.dir/TestSideClassesAndBusStop.cpp.o CMakeFiles/Projekt.dir/GoogleTest/gtest-death-test.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-filepath.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-port.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-printers.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-test-part.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-typed-test.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest_main.cc.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/Projekt.dir
   POST_BUILD = :
-  PRE_LINK = cd "/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug" && /opt/clion-2022.2.4/bin/cmake/linux/bin/cmake -E copy "/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/timetable.txt" "/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug" && cd "/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug"
+  PRE_LINK = :
   TARGET_FILE = Projekt
   TARGET_PDB = Projekt.dbg
 
@@ -209,7 +191,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/cmake-build-debug
 
-build all: phony tests gtest Projekt
+build all: phony Projekt
 
 # =============================================================================
 # Built-in targets
