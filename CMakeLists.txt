@@ -11,9 +11,11 @@ set(SOURCE_FILES
         side_classes.cpp
         BusStop.cpp
         BusLine.cpp
+        PTNetwork.cpp
 
         TestBusLine.cpp
         TestSideClassesAndBusStop.cpp
+        TestNetwork.cpp
 
         GoogleTest/gtest-death-test.cc
         GoogleTest/gtest-filepath.cc

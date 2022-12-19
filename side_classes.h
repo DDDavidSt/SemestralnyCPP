@@ -34,6 +34,7 @@ class Time{
 public:
     Time();
     Time(int hours0, int minutes0);
+    explicit Time(std::string& time);
     bool setTime(int hours0, int minutes0);
     std::string getTime() const;
     std::pair<int,int> getTimePair() { return std::make_pair(hours, minutes);};

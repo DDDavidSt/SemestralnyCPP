@@ -11,6 +11,7 @@ class BusStop{
     int *lines = new int;
     int number_of_lines = 0;
 public:
+    BusStop(): number(0), number_of_lines(0), lines(){};
     BusStop(const std::string& stop_name, int num);
     bool operator == (BusStop const &b1){
         if(b1.getName() == name && b1.getStopNumber() == number){

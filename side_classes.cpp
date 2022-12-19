@@ -11,15 +11,26 @@ Time::Time(){
 }
 bool isTimeOK(int hours,int minutes){
     if (hours < 0 || hours >= 24 || minutes < 0 || minutes >= 60) {
-        return true;
+        return false;
     }
-    return false;
+    return true;
 }
 Time::Time(int hours0, int minutes0) {
     setTime(hours0, minutes0);
 }
+
+Time::Time(std::string& time){
+    int h, m;
+    h = stoi(time.substr(0, time.find(':')));
+    m = stoi(time.substr(time.find(':') + 1, time.size() -1));
+    if(isTimeOK(h,m)){
+        hours = h;
+        minutes = m;
+    }
+}
+
 bool Time::setTime(int hours0, int minutes0){
-    if (isTimeOK(hours0, minutes0)) {
+    if (!isTimeOK(hours0, minutes0)) {
         hours = 0;
         minutes = 0;
     } else {

@@ -27,7 +27,7 @@ public:
     bool setIntervalWorkdays(int work_int);
     bool setIntervalWeekends(int wknd_int);
     std::string getTimetable() const;
-    void timetableToFile(std::string file) const;
+    void timetableToFile(const std::string& file) const;
     bool changeLineNum(int new_line_num) ;
     int getLineNum() const {return line_num;};
     int getIntervalWorkdays() const {return interval_workdays;};

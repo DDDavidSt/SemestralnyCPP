@@ -31,6 +31,9 @@ TEST(TestSideClassesAndBusStop, Time){
     cas5 -= cas2;
     Time cassss5(21,55);
     ASSERT_EQ("21:55", cas5.getTime());
+    std::string cas = "23:55";
+    Time csc(cas);
+    ASSERT_EQ(std::make_pair(23,55), csc.getTimePair());
 }
 
 TEST(TestSideClassesAndBusStop, TimeCompare){

@@ -175,6 +175,9 @@ bool BusLine::removeStop(BusStop &stop_rem, int mins_prev_to_next) {
 }
 
 std::vector<std::pair<BusStop, Time>> BusLine::getEarliestFromStop(BusStop &start,BusStop &dest, Time &time, bool weekend){
+    if(!status){
+        throw Exception("Line " + std::to_string(line_num) + " currently not in order");
+    }
     Time interval(interval_workdays/60, interval_workdays%60);
     if(weekend){
         interval.setTime(interval_weekends/60, interval_weekends%60);
@@ -321,14 +324,13 @@ std::string BusLine::getTimetable() const {
     return  ss.str();
 }
 
-void BusLine::timetableToFile(std::string file) const {
+void BusLine::timetableToFile(const std::string& file) const {
     std::ofstream out;
     out.open(file);
     if(!out){
         throw Exception("Could not open file " + file + " to write a timetable");
-
     }
     out << getTimetable();
-    out << "ejo";
     out.close();
 }
+
