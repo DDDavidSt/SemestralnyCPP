@@ -19,8 +19,8 @@ BusStop::BusStop(const std::string& stop_name, int num) {
 
 std::string BusStop::getBSlines() const{
     std::string res;
-    for(int i = 0; i < number_of_lines; ++i){
-        res += std::to_string(lines[i]) + ",";
+    for(int i: lines){
+        res += std::to_string(i) + ",";
     }
     return res.substr(0,res.size()-1);
 }
@@ -29,37 +29,21 @@ bool BusStop::addLine(int line_num){
     if(line_num <= 0){
         throw Exception(WrongLineNum);
     }
-    lines[number_of_lines] = line_num;
-    number_of_lines += 1;
+    lines.push_back(line_num);
     return true;
 }
 
 bool BusStop::removeLine(int line_num) {
-    if(number_of_lines == 0){
+    if(lines.empty()){
         throw Exception("No line to delete");
     }
-    int *newarr = new int[number_of_lines -1];
-    bool found = false;
-    for(int i = 0; i < number_of_lines; ++i){
-        if(lines[i] == line_num) {
-            found = true;
+    for(auto it = lines.begin(); it != lines.end(); it++){
+        if(*it == line_num){
+            lines.erase(it);
+            return true;
         }
     }
-    if(found){
-        int counter = 0;
-        for(int i = 0; i < number_of_lines; ++i){
-            if(lines[i] != line_num) {
-                newarr[counter] = lines[i];
-                ++counter;
-            }
-        }
-        number_of_lines -= 1;
-        delete lines;
-        lines = newarr;
-        return true;
-    }else{
-        throw Exception("Line number not found");
-    }
+    throw Exception("Line number not found");
 }
 
 bool BusStop::changeName(std::string new_name) {

@@ -13,8 +13,8 @@ public:
     PTNetwork(): admin(""), admin_psk(""){};
     PTNetwork(std::vector<BusStop> stops, std::vector<BusLine> lines) : busstops(std::move(stops)), buslines(std::move(lines)) {};
     void readStopsAndLines(const std::string& file);
-    BusStop getBusStopById(int id) const;
+    BusStop& getBusStopById(int id) ;
     int getNumberOfLines() const { return buslines.size();};
     int getNumberOfStops() const { return busstops.size();};
-    BusLine getBusLineByNum(int linenum) const;
+    BusLine& getBusLineByNum(int linenum);
 };

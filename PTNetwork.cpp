@@ -5,27 +5,28 @@
 #include <sstream>
 #include "Network.h"
 
-BusStop PTNetwork::getBusStopById(int id) const {
+BusStop& PTNetwork::getBusStopById(int id) {
     if(id <0){
         throw Exception("Bus Stop id out of range");
     }
-    for(BusStop i: busstops){
-        if(i.getStopNumber() == id){
-            return i;
+    for(auto it = busstops.begin(); it != busstops.end(); ++it){
+        if(it->getStopNumber() == id){
+            return *it;
         }
     }
-    BusStop b;
-    return b;
+    return *busstops.end();
 }
 
-BusLine PTNetwork::getBusLineByNum(int linenum) const {
-    for(BusLine i: buslines){
-        if(i.getLineNum() == linenum){
-            return i;
+BusLine& PTNetwork::getBusLineByNum(int linenum) {
+    if(linenum < 0){
+        throw Exception("Bus line id out of range");
+    }
+    for(auto & busline : buslines){
+        if(busline.getLineNum() == linenum){
+            return busline;
         }
     }
-    BusLine b(0,0);
-    return b;
+    return *buslines.end();
 }
 
 void PTNetwork::readStopsAndLines(const std::string& file){
@@ -73,13 +74,8 @@ void PTNetwork::readStopsAndLines(const std::string& file){
         int stopNo;
         std::string time;
         stopNo = stoi(line.substr(0, line.find(' ')));
-        BusStop stop;
-        try {
-            stop = std::move(getBusStopById((stopNo)));
-        }catch (Exception &e){
-            ;
-        }
-        if(stop.getName().empty()){
+        BusStop& stop = getBusStopById(stopNo);
+        if(stop == *busstops.end()){
             throw Exception("Bus Stop number " + std::to_string(stopNo) + " not among list of bus stops");
         }
         lineb.addStop(-1,stop, 0,0);
@@ -88,8 +84,8 @@ void PTNetwork::readStopsAndLines(const std::string& file){
         std::stringstream s3(line.substr(line.find('>') + 2, line.size()-1));
 
         while(s3 >> time >> delimiter >> stopNo >> delimiter) { // Extract word from the stream.
-            stop = std::move(getBusStopById((stopNo)));
-            if(stop.getName().empty()){
+            BusStop& stop = getBusStopById(stopNo);
+            if(stop == *busstops.end()){
                 throw Exception("Bus Stop number " + std::to_string(stopNo) + " not among list of bus stops");
             }
             Time time0(time);
