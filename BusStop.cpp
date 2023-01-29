@@ -2,6 +2,7 @@
 // Created by david on 18/12/22.
 //
 #include <iostream>
+#include <algorithm>
 #include "side_classes.h"
 #include "BusStop.h"
 
@@ -36,8 +37,11 @@ bool BusStop::addLine(int line_num){
     if(line_num <= 0){
         throw Exception(WrongLineNum);
     }
-    lines.push_back(line_num);
-    return true;
+    if(std::find(lines.begin(), lines.end(), line_num) == lines.end()){
+        lines.push_back(line_num);
+        return true;
+    }
+    return false;
 }
 
 bool BusStop::removeLine(int line_num) {

@@ -9,11 +9,9 @@
 #pragma once
 
 enum Type{BUS, TRAM, METRO};
-const Time time_closest(0,20); //interval within which the soonest departures are shown for a Bus Stop
 
 
 class BusLine{
-    int direction = 0; //which stop is a starting point (-1 last one to first one, 1 => first to last in stops list, 0 => both ways)
     std::vector<std::pair<BusStop, int>> stops;
     int interval_workdays = -1;
     int interval_weekends = -1;
@@ -21,6 +19,7 @@ class BusLine{
     bool status = false;
     Type type;
 public:
+    int direction = 0; //which stop is a starting point (-1 last one to first one, 1 => first to last in stops list, 0 => both ways)
     BusLine(int number, enum Type type0, int direct=1);
     BusLine(int number,  enum Type type0, int workdays_interval, int weekends_interval,int direct = 1);
     bool changeDirection(int new_direct);

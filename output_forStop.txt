@@ -1,0 +1,55 @@
+============-35-SMER-Chatam sofer-============
+   Holicska -16-> Mala scena -12-> Televizia -11-> Most SNP -3-> Kralovske udolie -12-> Lanfranconi -17-> Cintorin Slavicie -19-> Chatam sofer
+   Linka momentalne mimo prevadzky
+============-29-SMER-Cintorin Slavicie-============
+   Holicska <-4-> SND <-7-> Safarikovo namestie <-5-> Most SNP <-10-> Mala scena <-13-> Jesenskeho <-9-> Cintorin Slavicie
+   Pondelok az piatok:
+   0| 26 56 
+   1| 26 56 
+   2| 26 56 
+   3| 26 56 
+   4| 26 56 
+   5| 26 56 
+   6| 26 56 
+   7| 26 56 
+   8| 26 56 
+   9| 26 56 
+   10| 26 56 
+   11| 26 56 
+   12| 26 56 
+   13| 26 56 
+   14| 26 56 
+   15| 26 56 
+   16| 26 56 
+   17| 26 56 
+   18| 26 56 
+   19| 26 56 
+   20| 26 56 
+   21| 26 56 
+   22| 26 56 
+   23| 26 56 
+   Vikendy:
+   0| 26 
+   1| 26 
+   2| 26 
+   3| 26 
+   4| 26 
+   5| 26 
+   6| 26 
+   7| 26 
+   8| 26 
+   9| 26 
+   10| 26 
+   11| 26 
+   12| 26 
+   13| 26 
+   14| 26 
+   15| 26 
+   16| 26 
+   17| 26 
+   18| 26 
+   19| 26 
+   20| 26 
+   21| 26 
+   22| 26 
+   23| 26 

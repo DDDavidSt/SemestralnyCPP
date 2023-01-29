@@ -115,7 +115,7 @@ bool Time::operator==(const Time &other) {
 }
 
 bool Time::operator<=(const Time &other) {
-    if(hours < other.hours || hours == other.hours){
+    if(hours < other.hours){
         return true;
     }if(hours == other.hours && (minutes < other.minutes || minutes == other.minutes)){
         return true;
