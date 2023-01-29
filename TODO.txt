@@ -1,0 +1,14 @@
+DONE:
+-nacitanie CP zo suboru
+-vypisanie tabulky casov prichodov/odchodov zastavok pre jednotlive linky
+-vlastnosti vozidiel (elektricka/autobus/metro)
+-vypisanie tabulky casov prichodov/odchodov vozidiel pre zadanu zastavku alebo zastavok pre jednotlive linky
+
+TODO:
+
+-export celeho cestovneho poriadku pre jednotlive linky alebo pre jednotlive zastavky
+-admin prava na menenie siete a zastavok atd
+
+-vyhladavanie spojov zo zastavky A do B (nejaky BFS)
+-vypisanie ceny listka pre zvolenu trasu z mnoziny najdenycch spojov
+-najblizsie odchody/prichody zo zastavky

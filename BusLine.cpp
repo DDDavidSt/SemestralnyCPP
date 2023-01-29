@@ -8,7 +8,7 @@
 #include <fstream>
 #include "BusLine.h"
 
-BusLine::BusLine(int number, int direct) {
+BusLine::BusLine(int number, Type type1, int direct) {
     if(number <= 0){
         throw Exception(WrongBusLineNumber);
     }
@@ -17,9 +17,10 @@ BusLine::BusLine(int number, int direct) {
     }
     line_num = number;
     direction = direct;
+    type = type1;
 }
 
-BusLine::BusLine(int number,  int workdays_interval, int weekends_interval, int direct){
+BusLine::BusLine(int number, Type type1, int workdays_interval, int weekends_interval, int direct){
     if(number <= 0){
         throw Exception(WrongBusLineNumber);
     }
@@ -36,6 +37,7 @@ BusLine::BusLine(int number,  int workdays_interval, int weekends_interval, int 
     interval_workdays = workdays_interval;
     interval_weekends = weekends_interval;
     direction = direct;
+    type = type1;
 }
 
 
@@ -174,6 +176,7 @@ bool BusLine::removeStop(BusStop &stop_rem, int mins_prev_to_next) {
     return true;
 }
 
+
 std::vector<std::pair<BusStop, Time>> BusLine::getEarliestFromStop(BusStop &start,BusStop &dest, Time &time, bool weekend){
     if(!status){
         throw Exception("Line " + std::to_string(line_num) + " currently not in order");
@@ -292,13 +295,12 @@ std::string BusLine::getEarliestFromStopString(BusStop &stop,BusStop &dest, Time
 }
 std::string BusLine::getTimetable() const {
     std::stringstream ss;
-    int curr = interval_workdays;
+    int curr = 0;
     ss << "Pondelok az piatok" << std::endl;
-    for(unsigned int i =0; i < 23; ++i){
+    for(unsigned int i =0; i <= 23; ++i){
         ss << i <<"| ";
         while(curr < 60){
             ss << curr;
-
             curr += interval_workdays;
             if(curr < 60 ){
                 ss << " ";
@@ -307,7 +309,7 @@ std::string BusLine::getTimetable() const {
         curr -= 60;
         ss<<std::endl;
     }
-    curr = interval_weekends;
+    curr = 0;
     ss << "Vikendy" << std::endl;
     for(unsigned int i =0; i < 24; ++i){
         ss << std::setfill('0') << std::setw(2) << i <<"| ";
@@ -333,4 +335,5 @@ void BusLine::timetableToFile(const std::string& file) const {
     out << getTimetable();
     out.close();
 }
+
 

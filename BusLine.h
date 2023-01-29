@@ -8,6 +8,10 @@
 
 #pragma once
 
+enum Type{BUS, TRAM, METRO};
+const Time time_closest(0,20); //interval within which the soonest departures are shown for a Bus Stop
+
+
 class BusLine{
     int direction = 0; //which stop is a starting point (-1 last one to first one, 1 => first to last in stops list, 0 => both ways)
     std::vector<std::pair<BusStop, int>> stops;
@@ -15,10 +19,10 @@ class BusLine{
     int interval_weekends = -1;
     int line_num = -1;
     bool status = false;
-
+    Type type;
 public:
-    BusLine(int number, int direct=1);
-    BusLine(int number,  int workdays_interval, int weekends_interval,int direct = 1);
+    BusLine(int number, enum Type type0, int direct=1);
+    BusLine(int number,  enum Type type0, int workdays_interval, int weekends_interval,int direct = 1);
     bool changeDirection(int new_direct);
     bool isLineInOrder() const {return status;};
     std::string getStopsString() const;
@@ -30,10 +34,14 @@ public:
     void timetableToFile(const std::string& file) const;
     bool changeLineNum(int new_line_num) ;
     int getLineNum() const {return line_num;};
+    Type getLineType() const {return type;};
     int getIntervalWorkdays() const {return interval_workdays;};
     int getIntervalWeekends() const{return interval_weekends;};
+    BusStop getLastStop() const {return stops.back().first;};
     bool addStop(int position, BusStop &new_stop, int mins_from_prev, int mins_from_next) ; //inserts a new stop at the postion in vector
     bool removeStop(BusStop &stop_rem, int mins_prev_to_next = -1); //if mins_prev_to_next not sepcified then just uses sum of the neighbouring elements around stop_rem
     std::vector<std::pair<BusStop, Time>> getEarliestFromStop(BusStop &start, BusStop &dest, Time &time, bool weekend=false);//return vector of stops and their scheduled departure
     std::string getEarliestFromStopString(BusStop &start, BusStop &dest, Time &time, bool weekend=false);
+
+    BusLine():line_num(-1), direction(-1){};
 };

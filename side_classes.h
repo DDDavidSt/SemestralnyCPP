@@ -7,7 +7,7 @@
 const unsigned int min_interval_mins  = 5;
 const unsigned int max_interval_mins = 240;
 
-const std::string WrongBusStopName = "Wrong bus stop name";
+const std::string WrongBusStopName = "Wrong bus stop name - must be of non-empty length and start with a letter";
 const std::string WrongBusStopNumber = "Wrong bus stop number";
 const std::string WrongLineNum = "Incorrect line number";
 const std::string WrongBusLineNumber = "Wrong bus line number";
@@ -38,11 +38,12 @@ public:
     bool setTime(int hours0, int minutes0);
     std::string getTime() const;
     std::pair<int,int> getTimePair() { return std::make_pair(hours, minutes);};
-    Time operator +(Time &other);
-    Time operator -(Time &other);
-    Time operator +=(Time &other);
-    Time operator -=(Time &other);
-    bool operator <(Time &other);
-    bool operator >(Time &other);
-    bool operator ==(Time &other);
+    Time operator +(const Time &other);
+    Time operator -(const Time &other);
+    Time operator +=(const Time &other);
+    Time operator -=(const Time &other);
+    bool operator <(const Time &other);
+    bool operator >(const Time &other);
+    bool operator ==(const Time &other);
+    bool operator <=(const Time &other);
 };

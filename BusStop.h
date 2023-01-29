@@ -11,7 +11,7 @@ class BusStop{
     std::string name;
     std::vector<int> lines;
 public:
-    BusStop(): number(0), name(""){};
+    BusStop(): number(-1), name(""){};
     BusStop(const std::string& stop_name, int num);
     bool operator == (BusStop const &b1){
         if(b1.getName() == name && b1.getStopNumber() == number){
@@ -27,10 +27,11 @@ public:
     };
     bool addLine(int line_num);
     bool removeLine(int line_num);
-    bool changeName(std::string new_name);
-    bool changeNumLine(int new_num);
+    bool changeName(const std::string &new_name);
+    bool changeStopNum(int new_num);
     int numberOfLines() const {return lines.size();};
     std::string getName() const { return name; };
     int getStopNumber() const {return number; };
+    std::vector<int> getCrossingLines(){return lines;};
     std::string getBSlines() const;
 };

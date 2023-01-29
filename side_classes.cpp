@@ -44,7 +44,7 @@ std::string Time::getTime() const {
     return ss.str();
 }
 
-Time Time::operator+(Time &other) {
+Time Time::operator+(const Time &other) {
     Time newTime;
     if(minutes + other.minutes >= 60) {
         newTime.hours += 1;
@@ -54,7 +54,7 @@ Time Time::operator+(Time &other) {
     return newTime;
 }
 
-Time Time::operator-(Time &other) {
+Time Time::operator-(const Time &other) {
     Time newTime;
     if(minutes - other.minutes < 0) {
         newTime.hours -= 1;
@@ -70,7 +70,7 @@ Time Time::operator-(Time &other) {
     }
     return newTime;
 }
-Time Time::operator+=(Time &other) {
+Time Time::operator+=(const Time &other) {
     if(minutes + other.minutes >= 60) {
         hours += 1;
     }
@@ -78,7 +78,7 @@ Time Time::operator+=(Time &other) {
     hours = (hours + other.hours)%24;
 }
 
-Time Time::operator-=(Time &other) {
+Time Time::operator-=(const Time &other) {
     if(minutes - other.minutes < 0) {
         hours -= 1;
     }
@@ -92,7 +92,7 @@ Time Time::operator-=(Time &other) {
     }
 }
 
-bool Time::operator<(Time &other) {
+bool Time::operator<(const Time &other) {
     if(hours < other.hours){
         return true;
     }if(hours == other.hours && minutes < other.minutes){
@@ -101,7 +101,7 @@ bool Time::operator<(Time &other) {
     return false;
 }
 
-bool Time::operator>(Time &other) {
+bool Time::operator>(const Time &other) {
     if(hours > other.hours){
         return true;
     }if(hours == other.hours && minutes > other.minutes){
@@ -110,6 +110,15 @@ bool Time::operator>(Time &other) {
     return false;
 }
 
-bool Time::operator==(Time &other) {
+bool Time::operator==(const Time &other) {
     return hours == other.hours && minutes == other.minutes;
+}
+
+bool Time::operator<=(const Time &other) {
+    if(hours < other.hours || hours == other.hours){
+        return true;
+    }if(hours == other.hours && (minutes < other.minutes || minutes == other.minutes)){
+        return true;
+    }
+    return false;
 }

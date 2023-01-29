@@ -25,7 +25,10 @@ TEST(TestNetwork, ReadFromFIle){
     BusStop cminter, lanf;
     cminter = (bratislava.getBusStopById(9));
     ASSERT_EQ("Cintorin Slavicie", cminter.getName());
-    ASSERT_EQ("39,35", cminter.getBSlines());
+    ASSERT_EQ(BUS, bratislava.getBusLineByNum(39).getLineType());
+    ASSERT_EQ(TRAM, bratislava.getBusLineByNum(4).getLineType());
+    ASSERT_EQ(METRO, bratislava.getBusLineByNum(29).getLineType());
+    ASSERT_EQ("39,35,29", cminter.getBSlines());
     lanf = (bratislava.getBusStopById(12));
     ASSERT_EQ("(00:40)Cintorin Slavicie -00:06-> (00:46)Televizia -00:07-> (00:53)Zoo -00:06-> (00:59)Lanfranconi", bratislava.getBusLineByNum(39).getEarliestFromStopString(cminter, lanf, cas));
     BusStop holic, kralud;
@@ -45,6 +48,13 @@ TEST(TestNetwork, Nasty){
     BusStop cminter, lanf;
     cminter = (bratislava.getBusStopById(9));
     lanf = (bratislava.getBusStopById(12));
+
+    BusStop nastyy;
+    try {
+        nastyy = bratislava.getBusStopById(900);
+    }catch (Exception &e){
+        ASSERT_EQ(e.message(), "No such stop ID 900 in network");
+    }
     try{
         std::string res;
         res = bratislava.getBusLineByNum(4).getEarliestFromStopString(cminter, lanf,cas);
@@ -68,5 +78,48 @@ TEST(TestNetwork, NastyFile){
     }catch (Exception &e){
         ASSERT_EQ("Bus Stop number 23 not among list of bus stops", e.message());
     }
+
+}
+
+TEST(TestNetwork, NastyMultiBusStopsAndLines){
+    PTNetwork bratislava_zla;
+    try{
+        bratislava_zla.readStopsAndLines("rfm_bad_multi_bus_num.txt");
+    }catch (Exception &e){
+        ASSERT_EQ("Multiple Bus Stop number definition in file rfm_bad_multi_bus_num.txt on stop number 14", e.message());
+    }
+    try{
+        bratislava_zla.readStopsAndLines("rfm_multi_lines_num.txt");
+    }catch (Exception &e){
+        ASSERT_EQ("Multiple Bus Line number definition in file rfm_multi_lines_num.txt on Bus Line number 39", e.message());
+    }
+}
+
+TEST(TestNetwork, NoLines){
+    PTNetwork ba_without_lines;
+    ba_without_lines.readStopsAndLines("rfm_no_lines.txt");
+    ASSERT_EQ("Dobrovicova", ba_without_lines.getBusStopById(1).getName());
+    ASSERT_EQ("Zochova", ba_without_lines.getBusStopById(15).getName());
+}
+
+TEST(TestNetwork, NoStops){
+    PTNetwork ba_without_lines;
+
+    try{
+        ba_without_lines.readStopsAndLines("rfm_no_stops.txt");
+    }catch (Exception &e){
+        ASSERT_EQ("Wrong bus stop name - must be of non-empty length and start with a letter",e.message());
+    }
+
+}
+
+TEST(TestNetwork, EarliestConn){
+    PTNetwork bratislava;
+    bratislava.readStopsAndLines("read_from_me.txt");
+    BusStop cminter = bratislava.getBusStopById(9);
+    Time time(0,2);
+    ASSERT_EQ("39: o 00:18 minut (odchod->00:20), smer: Zochova\n29: o 00:28 minut (odchod->00:30), smer: Cintorin Slavicie\n", bratislava.getClosestFromStopString(cminter, time));
+    BusStop snp = bratislava.getBusStopById(7);
+    ASSERT_EQ("4: o 00:26 minut (odchod->00:28), smer: Zochova\n29: o 00:14 minut (odchod->00:16), smer: Cintorin Slavicie\n", bratislava.getClosestFromStopString(snp, time));
 
 }

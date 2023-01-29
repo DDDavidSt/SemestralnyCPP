@@ -1,0 +1,15 @@
+1;Dobrovicova
+2;Safarikovo namestie
+3;Jesenskeho
+4;Mala scena
+5;SND
+6;Holicska
+7;Most SNP
+8;Nameste L.Stura
+9;Cintorin Slavicie
+10;Televizia
+11;Zoo
+12;Lanfranconi
+13;Kralovske udolie
+14;Chatam sofer
+15;Zochova

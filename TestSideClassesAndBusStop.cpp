@@ -99,7 +99,7 @@ TEST(TestSideClassesAndBusStop, ZmenMenoCislo) {
     BusStop cminter("Cintorin Slavicie", 2);
     cminter.changeName("Rokfort");
     ASSERT_EQ("Rokfort", cminter.getName());
-    cminter.changeNumLine(120);
+    cminter.changeStopNum(120);
     ASSERT_EQ(120, cminter.getStopNumber());
 }
 
@@ -112,7 +112,7 @@ TEST(TestSideClassesAndBusStop, ZmenMenoCisloNespr) {
         ASSERT_EQ(WrongBusStopName, e.message());
     }
     try{
-        cminter.changeNumLine(-10);
+        cminter.changeStopNum(-10);
     }catch (Exception &e){
         ASSERT_EQ(WrongBusStopNumber, e.message());
     }
@@ -120,7 +120,7 @@ TEST(TestSideClassesAndBusStop, ZmenMenoCisloNespr) {
     ASSERT_EQ(2, cminter.getStopNumber());
     cminter.changeName("Rokfort");
     ASSERT_EQ("Rokfort", cminter.getName());
-    cminter.changeNumLine(120);
+    cminter.changeStopNum(120);
     ASSERT_EQ(120, cminter.getStopNumber());
 
 }

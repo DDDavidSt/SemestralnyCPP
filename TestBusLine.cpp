@@ -12,11 +12,11 @@ using namespace std;
 using namespace ::testing;
 
 TEST(TestBusLine, BusLineINIT) {
-    BusLine tridevat(39);
+    BusLine tridevat(39, BUS);
     ASSERT_EQ(39, tridevat.getLineNum());
     ASSERT_EQ("", tridevat.getStopsString());
     ASSERT_EQ(-1, tridevat.getIntervalWeekends());
-
+    ASSERT_EQ(BUS, tridevat.getLineType());
     ASSERT_FALSE(tridevat.isLineInOrder());
     ASSERT_FALSE(tridevat.changeStatus());
 
@@ -26,9 +26,9 @@ TEST(TestBusLine, BusLineINIT) {
 }
 
 TEST(TestBusLine, BusLineOK) {
-    BusLine tridevat(39);
+    BusLine tridevat(39, TRAM,  0);
     ASSERT_EQ(39, tridevat.getLineNum());
-
+    ASSERT_EQ(TRAM, tridevat.getLineType());
     ASSERT_TRUE(tridevat.setIntervalWeekends(40));
     ASSERT_EQ(40, tridevat.getIntervalWeekends());
     tridevat.setIntervalWorkdays(60);
@@ -39,7 +39,7 @@ TEST(TestBusLine, BusLineOK) {
 }
 
 TEST(TestBusLine, AddStops) {
-    BusLine tridevat(39, 1);
+    BusLine tridevat(39, BUS,   1);
     BusStop cminter("Cintorin Slavicie", 1);
     BusStop zoo("Zoo", 2);
     BusStop lanf("Lanfranconi", 3);
@@ -53,15 +53,18 @@ TEST(TestBusLine, AddStops) {
     tridevat.addStop(-1, lanf, 13, 0);
     tridevat.addStop(-1, kralud, 6, 0);
     ASSERT_EQ("Cintorin Slavicie -10-> Zoo -13-> Lanfranconi -6-> Kralovske udolie", tridevat.getStopsString());
+    ASSERT_EQ("Kralovske udolie", tridevat.getLastStop().getName());
     tridevat.changeDirection(0);
     ASSERT_EQ("Cintorin Slavicie <-10-> Zoo <-13-> Lanfranconi <-6-> Kralovske udolie", tridevat.getStopsString());
     tridevat.changeDirection(-1);
     ASSERT_EQ("Kralovske udolie -6-> Lanfranconi -13-> Zoo -10-> Cintorin Slavicie", tridevat.getStopsString());
+    ASSERT_EQ("Cintorin Slavicie", tridevat.getLastStop().getName());
+
 
 }
 
 TEST(TestBusLine, RemoveStops) {
-    BusLine tridevat(39, 1);
+    BusLine tridevat(39, BUS,  1);
     BusStop cminter("Cintorin Slavicie", 1);
     BusStop zoo("Zoo", 2);
     BusStop lanf("Lanfranconi", 3);
@@ -109,49 +112,50 @@ TEST(TestBusLine, RemoveStops) {
 
 TEST(TestBusLine, BadBusLIne) {
     try {
-        BusLine zla(-1);
+        BusLine zla(-1, BUS);
     } catch (
             Exception &e
     ) {
         ASSERT_EQ(WrongBusLineNumber, e.message());
     }
+
     try {
-        BusLine zla(49, 43);
+        BusLine zla(49, BUS,  43);
     } catch (
             Exception &e
     ) {
         ASSERT_EQ(WrongDirection, e.message());
     }
     try {
-        BusLine zla(49, -43);
+        BusLine zla(49, BUS,  -43);
     } catch (
             Exception &e
     ) {
         ASSERT_EQ(WrongDirection, e.message());
     }
     try {
-        BusLine a(39, -1, 30, 1);
+        BusLine a(39, BUS,-1, 30,  1);
     } catch (
             Exception &e
     ) {
         ASSERT_EQ(OutsideWorkdayInterval, e.message());
     }
     try {
-        BusLine a(39, 6, -30, 1);
+        BusLine a(39,BUS, 6, -30,   1);
     } catch (
             Exception &e
     ) {
         ASSERT_EQ(OutsideWeekendInterval, e.message());
     }
     try {
-        BusLine a(39, 500, 30, 1);
+        BusLine a(39,BUS, 500, 30,  1);
     } catch (
             Exception &e
     ) {
         ASSERT_EQ(OutsideWorkdayInterval, e.message());
     }
     try {
-        BusLine a(39, 50, 600, 1);
+        BusLine a(39,BUS, 50, 600,  1);
     } catch (
             Exception &e
     ) {
@@ -160,10 +164,10 @@ TEST(TestBusLine, BadBusLIne) {
 }
 
 TEST(TestBusLine, TimeTable) {
-    BusLine tridevat(39, 30, 40);
+    BusLine tridevat(39, BUS,30,  40);
 
     ASSERT_EQ("Pondelok az piatok\n"
-              "0| 30\n"
+              "0| 0 30\n"
               "1| 0 30\n"
               "2| 0 30\n"
               "3| 0 30\n"
@@ -186,8 +190,9 @@ TEST(TestBusLine, TimeTable) {
               "20| 0 30\n"
               "21| 0 30\n"
               "22| 0 30\n"
+              "23| 0 30\n"
               "Vikendy\n"
-              "00| 40\n"
+              "00| 0 40\n"
               "01| 20\n"
               "02| 0 40\n"
               "03| 20\n"
@@ -215,7 +220,7 @@ TEST(TestBusLine, TimeTable) {
     ASSERT_EQ(22, tridevat.getIntervalWorkdays());
     ASSERT_EQ(40, tridevat.getIntervalWeekends());
     ASSERT_EQ("Pondelok az piatok\n"
-              "0| 22 44\n"
+              "0| 0 22 44\n"
               "1| 6 28 50\n"
               "2| 12 34 56\n"
               "3| 18 40\n"
@@ -238,8 +243,9 @@ TEST(TestBusLine, TimeTable) {
               "20| 10 32 54\n"
               "21| 16 38\n"
               "22| 0 22 44\n"
+              "23| 6 28 50\n"
               "Vikendy\n"
-              "00| 40\n"
+              "00| 0 40\n"
               "01| 20\n"
               "02| 0 40\n"
               "03| 20\n"
@@ -266,7 +272,7 @@ TEST(TestBusLine, TimeTable) {
 }
 
 TEST(TestBusLine, getNearestConn) {
-    BusLine tridevat(39, 1);
+    BusLine tridevat(39, BUS,  1);
     BusStop cminter("Cintorin Slavicie", 1);
     BusStop zoo("Zoo", 2);
     BusStop lanf("Lanfranconi", 3);
@@ -283,6 +289,9 @@ TEST(TestBusLine, getNearestConn) {
     Time cas1(0, 44);
     ASSERT_EQ("(00:44)Cintorin Slavicie -00:06-> (00:50)Kralovske udolie -00:09-> (00:59)Zoo",
               tridevat.getEarliestFromStopString(cminter, zoo, cas1));
+    Time cas0(0,0);
+    ASSERT_EQ("(00:00)Cintorin Slavicie -00:06-> (00:06)Kralovske udolie -00:09-> (00:15)Zoo",
+              tridevat.getEarliestFromStopString(cminter, zoo, cas0));
     tridevat.changeDirection(-1);
     ASSERT_EQ(
             "(00:44)Lanfranconi -00:13-> (00:57)Zoo -00:09-> (01:06)Kralovske udolie -00:06-> (01:12)Cintorin Slavicie",
@@ -315,7 +324,7 @@ TEST(TestBusLine, getNearestConn) {
 }
 
 TEST(TestBusLine, NastyConnections) {
-    BusLine tridevat(39, 1);
+    BusLine tridevat(39, BUS,  1);
     BusStop cminter("Cintorin Slavicie", 1);
     BusStop zoo("Zoo", 2);
     BusStop lanf("Lanfranconi", 3);

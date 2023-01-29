@@ -5,8 +5,15 @@
 #include "side_classes.h"
 #include "BusStop.h"
 
+bool checkValidName(const std::string &stop_name){
+    if (!stop_name.empty() && (stop_name[0] >= 'A' && stop_name[0] <= 'Z' || stop_name[0] >= 'a' && stop_name[0] <= 'z')){
+        return true;
+    }
+    return false;
+}
+
 BusStop::BusStop(const std::string& stop_name, int num) {
-    if (stop_name.empty()){
+    if (!checkValidName(stop_name)){
         throw Exception(WrongBusStopName);
     }
     if (num <= 0){
@@ -46,15 +53,15 @@ bool BusStop::removeLine(int line_num) {
     throw Exception("Line number not found");
 }
 
-bool BusStop::changeName(std::string new_name) {
-    if(new_name.empty()){
+bool BusStop::changeName(const std::string &new_name) {
+    if(!checkValidName(new_name)){
         throw Exception(WrongBusStopName);
     }
     name = std::move(new_name);
     return true;
 }
 
-bool BusStop::changeNumLine(int new_num) {
+bool BusStop::changeStopNum(int new_num) {
     if(new_num < 0){
         throw Exception(WrongBusStopNumber);
     }
