@@ -26,6 +26,9 @@ BusStop::BusStop(const std::string& stop_name, int num) {
 
 
 std::string BusStop::getBSlines() const{
+    /*
+     * return a string of lines : <lineNum>, <lineNum>, ...
+     */
     std::string res;
     for(int i: lines){
         res += std::to_string(i) + ",";
@@ -34,6 +37,9 @@ std::string BusStop::getBSlines() const{
 }
 
 bool BusStop::addLine(int line_num){
+    /*
+     * if the line is not in vector of lines then adds a given line (with a correct number - otherwise exception)
+     */
     if(line_num <= 0){
         throw Exception(WrongLineNum);
     }
@@ -45,6 +51,9 @@ bool BusStop::addLine(int line_num){
 }
 
 bool BusStop::removeLine(int line_num) {
+    /*
+     * if given line is among lines then removes otherwise return false
+     */
     if(lines.empty()){
         throw Exception("No line to delete");
     }
@@ -54,7 +63,7 @@ bool BusStop::removeLine(int line_num) {
             return true;
         }
     }
-    throw Exception("Line number not found");
+    return false;
 }
 
 bool BusStop::changeName(const std::string &new_name) {
@@ -65,7 +74,7 @@ bool BusStop::changeName(const std::string &new_name) {
     return true;
 }
 
-bool BusStop::changeStopNum(int new_num) {
+bool BusStop::changeStopNum(int new_num){
     if(new_num < 0){
         throw Exception(WrongBusStopNumber);
     }

@@ -13,7 +13,7 @@ PTNetwork::~PTNetwork() {
     admin_psk = "";
 }
 
-bool PTNetwork::changePsk(std::string old_psk, std::string new_psk) {
+bool PTNetwork::changePsk(std::string &old_psk, std::string &new_psk) {
     if(old_psk == admin_psk){
         admin_psk = new_psk;
         return true;
@@ -21,37 +21,42 @@ bool PTNetwork::changePsk(std::string old_psk, std::string new_psk) {
     return false;
 }
 
-int PTNetwork::addStop(BusStop &new_stop) {
+int PTNetwork::addStop(BusStop *new_stop) {
     /*
-     * Adds a new stop to network - if the stop name is already in bus stop list then it return its number
-     * if the stop number is unique then it just gets appended otherwise rewrites stops number to last index + 1 and appends and returns its position
+     * Adds a new stop to network - if the stop name is already in bus stop list then returns its number
+     * if the stop number is not among stops vector then it just gets appended otherwise rewrites stops' number to last index + 1,appends it and returns its position
      */
-    if(new_stop.getName().empty()){
+    if(new_stop->getName().empty()){
         return -1;
     }
     for(std::pair<int, BusStop> i: busstops){
-        if(i.second.getName() == new_stop.getName()){
+        if(i.second.getName() == new_stop->getName()){
+            new_stop->changeStopNum(i.second.getStopNumber());
             return i.second.getStopNumber();
         }
     }
-    if(busstops.find(new_stop.getStopNumber()) != busstops.end()){
-        new_stop.changeStopNum((--busstops.end())->first +1);
-        busstops[(--busstops.end())->first +1] = new_stop;
+    if(busstops.find(new_stop->getStopNumber()) != busstops.end()){
+        new_stop->changeStopNum((--busstops.end())->first +1);
+        busstops[(--busstops.end())->first +1] = *new_stop;
     }
-    busstops[new_stop.getStopNumber()] = new_stop;
-    return new_stop.getStopNumber();
+    busstops[new_stop->getStopNumber()] = *new_stop;
+    return new_stop->getStopNumber();
 
 }
 
-bool PTNetwork::addLine(BusLine &new_line) {
-    BusLine amended(new_line.getLineNum(), new_line.getLineType(), new_line.getIntervalWorkdays(), new_line.getIntervalWeekends(), new_line.direction);
-    for(std::pair<BusStop,int> i: new_line.getStopVector()){
-        int which = addStop(i.first);
-        amended.addStop(-1, busstops[which], i.second,0);
-        busstops[which].addLine(amended.getLineNum());
+bool PTNetwork::addLine(BusLine &new_line){
+    /*
+     * takes a reference to a line and adds it to the network - adds all its stops using addStop and then adds the new line to the list of lines for each stop
+     * after that it adds the line if the line is not already among lines - otherwise throws an exception
+     */
+    for(auto it = new_line.getStopVector().begin(); it != new_line.getStopVector().end(); ++it){
+        int which = addStop(it->first);
+//        it->first.changeStopNum(which);
+//        amended.addStop(-1, busstops[which], it->second,0);
+        busstops[which].addLine(new_line.getLineNum());
     }
     if(buslines.find(new_line.getLineNum()) == buslines.end()){
-        buslines[new_line.getLineNum()] = amended;
+        buslines[new_line.getLineNum()] = new_line;
         return true;
     }
     throw Exception("Bus line number " + to_string(new_line.getLineNum()) + " already exists with route: " + buslines[new_line.getLineNum()].getStopsString());
@@ -59,11 +64,17 @@ bool PTNetwork::addLine(BusLine &new_line) {
 }
 
 void PTNetwork::clearAll(){
+    /*
+     * clears busstops and buslines
+     */
     busstops.clear();
     buslines.clear();
 }
 
 BusStop& PTNetwork::getBusStopById(int id) {
+    /*
+     * return a reference to a BusStop for given number - if not found throws an exception
+     */
     auto stop = busstops.find(id);
     if(stop == busstops.end()){
         throw Exception("No such stop ID "+ std::to_string(id) + " in network");
@@ -72,6 +83,9 @@ BusStop& PTNetwork::getBusStopById(int id) {
 }
 
 BusLine& PTNetwork::getBusLineByNum(int linenum) {
+    /*
+     * return a reference to a bus line by given number if not found throws an exception
+     */
     if(linenum < 0){
         throw Exception("Bus line id out of range");
     }
@@ -83,21 +97,29 @@ BusLine& PTNetwork::getBusLineByNum(int linenum) {
 }
 
 bool compareTuple(std::tuple<Time, int, BusStop> &i1, std::tuple<Time, int, BusStop> &i2){
+    /*
+     * used to sort the closest connections from stop
+     */
     return get<1>(i1) > get<1>(i2);
 }
 
 std::vector<std::tuple<Time,int, BusStop>> PTNetwork::getClosestFromStop(BusStop &stop, Time time1, Time interval, bool weekend){
     /*
-     * returns a sorted vector (min waiting time) of tuples of earliest time, bus line and final stop of the line for given bus stop
+     * for given bus stop and time returns a sorted vector (by shortest time) of tuples of:
+     * Time - departure
+     * int - number of Line
+     * BusStop - ending stop/direction of the line
+     *
+     * for all lines that are in order
      */
     std::vector<std::tuple<Time,int, BusStop>> result;
     for(int line:stop.getCrossingLines()){
         if(!buslines[line].isLineInOrder()){
             continue;
         }
-        BusStop dest = buslines[line].getLastStop();
+        BusStop* dest = buslines[line].getLastStop();
 
-        std::vector<std::pair<BusStop, Time>> cur = buslines[line].getEarliestFromStop(stop, dest, time1, weekend);
+        std::vector<std::pair<BusStop, Time>> cur = buslines[line].getEarliestFromStop(stop, *dest, time1, weekend);
         if(cur[0].second <= time1 + interval) {
             result.emplace_back(std::make_tuple(cur[0].second, line, cur[cur.size() - 1].first));
         }
@@ -120,6 +142,8 @@ std::string PTNetwork::getClosestFromStopString(BusStop &stop, Time time1, Time 
 
 void PTNetwork::readStopsAndLines(const std::string& file){
     /* reads a file in following format:
+     * <admin password>
+     *
      * <StopNumber>;<StopName>
      * ...
      * empty line
@@ -221,6 +245,18 @@ void PTNetwork::readStopsAndLines(const std::string& file){
 }
 
 void PTNetwork::writeStopsAndLines(const std::string &file) {
+    /*
+     * writes the current network in following format
+     * <admin password>
+     *
+     * <StopNumber>;<StopName>
+     * ...
+     * empty line
+     * <LineNumber>;<IntervalWorkdays>;<IntervalWeekends>;<IsInOrder>;<Direction(-1 <-, 0 <->, 1 ->)>
+     * <StartStopNumber> -> <TimeToGet> -> <StopNumber> ... <EndStopNumber>
+     * empty line
+     * ...
+    */
     ofstream output;
     output.open(file);
     output << admin_psk << endl << endl;
@@ -231,16 +267,20 @@ void PTNetwork::writeStopsAndLines(const std::string &file) {
     for(std::pair<int, BusLine> line:buslines){
         output << line.second.getLineNum() << ";" << line.second.getIntervalWorkdays() << ";" << line.second.getIntervalWeekends() << ";" << line.second.isLineInOrder() << ";" << line.second.direction << ";" << line.second.getLineType() << endl;
         Time diff;
-        output << line.second.getStopVector().begin()->first.getStopNumber();
+        output << line.second.getStopVector().begin()->first->getStopNumber();
         for(auto it = line.second.getStopVector().begin() + 1; it != line.second.getStopVector().end(); ++it){
             diff.setTime(0, it->second);
-            output << " -> " <<diff.getTime()<< " -> " << it->first.getStopNumber() ;
+            output << " -> " <<diff.getTime()<< " -> " << it->first->getStopNumber() ;
         }
         output << endl << endl;
     }
 }
 
 std::string PTNetwork::getTimeTableForStop(BusStop &stop) {
+    /*
+     * return a timetable for all lines that drive through given stop in the same format as for an individual line
+     * if line not in order then prints out that information
+     */
     if(busstops.find(stop.getStopNumber()) == busstops.end()){
         throw Exception("Given bus stop " + stop.getName() + " not in this network");
     }
@@ -248,18 +288,18 @@ std::string PTNetwork::getTimeTableForStop(BusStop &stop) {
     Time time1;
     for(int line:stop.getCrossingLines()){
         BusLine current_line = buslines[line];
-        BusStop last = current_line.getLastStop();
+        BusStop* last = current_line.getLastStop();
         if(!current_line.isLineInOrder()){
-            result << "============-" << current_line.getLineNum() << "-SMER-" << last.getName() << "-============" <<endl;
+            result << "============-" << current_line.getLineNum() << "-SMER-" << last->getName() << "-============" <<endl;
             result << "   " << current_line.getStopsString() << endl;
             result << "   Linka momentalne mimo prevadzky" << endl;
             continue;
         }
-        Time shifted_by_stop = current_line.getEarliestFromStop(stop, last, time1).begin()->second;//get the delay from the start stop to the given stop
+        Time shifted_by_stop = current_line.getEarliestFromStop(stop, *last, time1).begin()->second;//get the delay from the start stop to the given stop
         int mins = shifted_by_stop.getTimePair().second;
         int hours = shifted_by_stop.getTimePair().first;
         int interval = current_line.getIntervalWorkdays();
-        result << "============-" << current_line.getLineNum() << "-SMER-" << last.getName() << "-============" <<endl;
+        result << "============-" << current_line.getLineNum() << "-SMER-" << last->getName() << "-============" <<endl;
         result << "   " << current_line.getStopsString() << endl;
 
         result << "   Pondelok az piatok:" << endl;
@@ -294,6 +334,9 @@ std::string PTNetwork::getTimeTableForStop(BusStop &stop) {
 }
 
 void PTNetwork::writeTimeTableForStop(std::string filename, BusStop &stop) {
+    /*
+     * writes the output of getTimeTableForStop into the given file
+     */
     std::ofstream file;
     file.open(filename);
     file << getTimeTableForStop(stop);

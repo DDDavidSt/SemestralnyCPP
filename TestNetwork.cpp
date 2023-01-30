@@ -22,19 +22,19 @@ TEST(TestNetwork, ReadFromFIle){
     ASSERT_TRUE(bratislava.getBusLineByNum(39).isLineInOrder());
     ASSERT_FALSE(bratislava.getBusLineByNum(35).isLineInOrder());
     Time cas(0,30);
-    BusStop cminter, lanf;
-    cminter = (bratislava.getBusStopById(9));
-    ASSERT_EQ("Cintorin Slavicie", cminter.getName());
+    BusStop *cminter, *lanf;
+    cminter = &(bratislava.getBusStopById(9));
+    ASSERT_EQ("Cintorin Slavicie", cminter->getName());
     ASSERT_EQ(BUS, bratislava.getBusLineByNum(39).getLineType());
     ASSERT_EQ(TRAM, bratislava.getBusLineByNum(4).getLineType());
     ASSERT_EQ(METRO, bratislava.getBusLineByNum(29).getLineType());
-    ASSERT_EQ("39,35,29", cminter.getBSlines());
-    lanf = (bratislava.getBusStopById(12));
-    ASSERT_EQ("(00:40)Cintorin Slavicie -00:06-> (00:46)Televizia -00:07-> (00:53)Zoo -00:06-> (00:59)Lanfranconi", bratislava.getBusLineByNum(39).getEarliestFromStopString(cminter, lanf, cas));
-    BusStop holic, kralud;
-    holic = (bratislava.getBusStopById(6));
-    kralud = (bratislava.getBusStopById(4));
-    ASSERT_EQ("(00:30)Holicska -00:04-> (00:34)SND -00:07-> (00:41)Safarikovo namestie -00:05-> (00:46)Most SNP -00:10-> (00:56)Mala scena", bratislava.getBusLineByNum(29).getEarliestFromStopString(holic, kralud,cas));
+    ASSERT_EQ("39,35,29", cminter->getBSlines());
+    lanf = &(bratislava.getBusStopById(12));
+    ASSERT_EQ("(00:40)Cintorin Slavicie -00:06-> (00:46)Televizia -00:07-> (00:53)Zoo -00:06-> (00:59)Lanfranconi", bratislava.getBusLineByNum(39).getEarliestFromStopString(*cminter, *lanf, cas));
+    BusStop *holic, *kralud;
+    holic = &(bratislava.getBusStopById(6));
+    kralud = &(bratislava.getBusStopById(4));
+    ASSERT_EQ("(00:30)Holicska -00:04-> (00:34)SND -00:07-> (00:41)Safarikovo namestie -00:05-> (00:46)Most SNP -00:10-> (00:56)Mala scena", bratislava.getBusLineByNum(29).getEarliestFromStopString(*holic, *kralud,cas));
 }
 
 TEST(TestNetwork, Nasty){
@@ -116,13 +116,13 @@ TEST(TestNetwork, NoStops){
 TEST(TestNetwork, EarliestConn){
     PTNetwork bratislava;
     bratislava.readStopsAndLines("read_from_me.txt");
-    BusStop cminter = bratislava.getBusStopById(9);
+    BusStop *cminter = &bratislava.getBusStopById(9);
     Time time(0,2);
-    ASSERT_EQ("39: o 00:18 minut (odchod->00:20), smer: Zochova\n", bratislava.getClosestFromStopString(cminter, time));
-    BusStop snp = bratislava.getBusStopById(7);
-    ASSERT_EQ("29: o 00:14 minut (odchod->00:16), smer: Cintorin Slavicie\n", bratislava.getClosestFromStopString(snp, time));
+    ASSERT_EQ("39: o 00:18 minut (odchod->00:20), smer: Zochova\n", bratislava.getClosestFromStopString(*cminter, time));
+    BusStop *snp = &bratislava.getBusStopById(7);
+    ASSERT_EQ("29: o 00:14 minut (odchod->00:16), smer: Cintorin Slavicie\n", bratislava.getClosestFromStopString(*snp, time));
     Time interv(0,30);
-    ASSERT_EQ("29: o 00:14 minut (odchod->00:16), smer: Cintorin Slavicie\n4: o 00:26 minut (odchod->00:28), smer: Zochova\n", bratislava.getClosestFromStopString(snp, time, interv));
+    ASSERT_EQ("29: o 00:14 minut (odchod->00:16), smer: Cintorin Slavicie\n4: o 00:26 minut (odchod->00:28), smer: Zochova\n", bratislava.getClosestFromStopString(*snp, time, interv));
 
 }
 
@@ -167,19 +167,19 @@ TEST(TestNetwork, NetworkWrite){
     ASSERT_TRUE(bratislava.getBusLineByNum(39).isLineInOrder());
     ASSERT_FALSE(bratislava.getBusLineByNum(35).isLineInOrder());
     Time cas(0,30);
-    BusStop cminter, lanf;
-    cminter = (bratislava.getBusStopById(9));
-    ASSERT_EQ("Cintorin Slavicie", cminter.getName());
+    BusStop *cminter, *lanf;
+    cminter = &(bratislava.getBusStopById(9));
+    ASSERT_EQ("Cintorin Slavicie", cminter->getName());
     ASSERT_EQ(BUS, bratislava.getBusLineByNum(39).getLineType());
     ASSERT_EQ(TRAM, bratislava.getBusLineByNum(4).getLineType());
     ASSERT_EQ(METRO, bratislava.getBusLineByNum(29).getLineType());
-    ASSERT_EQ("29,35,39", cminter.getBSlines());
-    lanf = (bratislava.getBusStopById(12));
-    ASSERT_EQ("(00:40)Cintorin Slavicie -00:06-> (00:46)Televizia -00:07-> (00:53)Zoo -00:06-> (00:59)Lanfranconi", bratislava.getBusLineByNum(39).getEarliestFromStopString(cminter, lanf, cas));
-    BusStop holic, kralud;
-    holic = (bratislava.getBusStopById(6));
-    kralud = (bratislava.getBusStopById(4));
-    ASSERT_EQ("(00:30)Holicska -00:04-> (00:34)SND -00:07-> (00:41)Safarikovo namestie -00:05-> (00:46)Most SNP -00:10-> (00:56)Mala scena", bratislava.getBusLineByNum(29).getEarliestFromStopString(holic, kralud,cas));
+    ASSERT_EQ("29,35,39", cminter->getBSlines());
+    lanf = &(bratislava.getBusStopById(12));
+    ASSERT_EQ("(00:40)Cintorin Slavicie -00:06-> (00:46)Televizia -00:07-> (00:53)Zoo -00:06-> (00:59)Lanfranconi", bratislava.getBusLineByNum(39).getEarliestFromStopString(*cminter, *lanf, cas));
+    BusStop *holic, *kralud;
+    holic = &(bratislava.getBusStopById(6));
+    kralud = &(bratislava.getBusStopById(4));
+    ASSERT_EQ("(00:30)Holicska -00:04-> (00:34)SND -00:07-> (00:41)Safarikovo namestie -00:05-> (00:46)Most SNP -00:10-> (00:56)Mala scena", bratislava.getBusLineByNum(29).getEarliestFromStopString(*holic, *kralud,cas));
 }
 
 TEST(TestNetwork, AddStop){
@@ -187,19 +187,19 @@ TEST(TestNetwork, AddStop){
     ba.readStopsAndLines("read_from_me.txt");
     ASSERT_EQ(15, ba.getNumberOfStops());
     BusStop kremnica("Kremnica", 2);
-    ba.addStop(kremnica);
+    ba.addStop(&kremnica);
     ASSERT_EQ("Kremnica",ba.getBusStopById(16).getName());
     ASSERT_EQ(16,ba.getBusStopById(16).getStopNumber());
     ASSERT_EQ(16, ba.getNumberOfStops());
     BusStop prazdna;
-    ba.addStop(prazdna);
+    ba.addStop(&prazdna);
     ASSERT_EQ(16, ba.getNumberOfStops());
     BusStop uniq("Siveckin", 18);
-    ba.addStop(uniq);
+    ba.addStop(&uniq);
     ASSERT_EQ(18, ba.getBusStopById(18).getStopNumber());
 
     try{
-        ba.addStop(ba.getBusStopById(9));
+        ba.addStop(&ba.getBusStopById(9));
     }catch (Exception &e){
         ASSERT_EQ(e.message(), "Bus stop with name Cintorin Slavicie already exists - 9 - Cintorin Slavicie");
     }
@@ -209,23 +209,27 @@ TEST(TestNetwork, AddLine){
     PTNetwork ba;
     ba.readStopsAndLines("read_from_me.txt");
     ASSERT_EQ(4,ba.getNumberOfLines());
-    BusLine sty(40, BUS,  1);
-    BusStop cminter("Cintorin Slavicie", 1);
-    BusStop zoo("Zoo", 2);
-    BusStop lanf("Lanfranconi", 3);
-    BusStop kralud("Kralovske udolie", 4);
-    BusStop chaso("Chatam sofer", 5);
-    BusStop nova("Nova Zastavka", 4);
-    sty.setIntervalWeekends(40);
-    sty.setIntervalWorkdays(60);
-    sty.addStop(-1,cminter,0,0);
-    sty.addStop(-1, zoo,5,0);
-    sty.addStop(-1, lanf, 7,0);
-    sty.addStop(-1, kralud, 4,0);
-    sty.addStop(-1, chaso, 12,0);
-    sty.addStop(-1, nova, 32,0);
-    ba.addLine(sty);
+    BusLine *sty = new BusLine(40, BUS, 1);
+    BusStop *cminter = new BusStop("Cintorin Slavicie", 1);
+    BusStop *zoo = new BusStop("Zoo", 2);
+    BusStop *lanf = new BusStop("Lanfranconi", 3);
+    BusStop *kralud = new BusStop("Kralovske udolie", 4);
+    BusStop *chaso = new BusStop("Chatam sofer", 5);
+    BusStop *nova = new BusStop("Nova Zastavka", 4);
+    sty->setIntervalWeekends(40);
+    sty->setIntervalWorkdays(60);
+    sty->addStop(-1,*cminter,0,0);
+    sty->addStop(-1, *zoo,5,0);
+    sty->addStop(-1, *lanf, 7,0);
+    sty->addStop(-1, *kralud, 4,0);
+    sty->addStop(-1, *chaso, 12,0);
+    sty->addStop(-1, *nova, 32, 0);
+    ba.addLine(*sty);
     ASSERT_EQ(5,ba.getNumberOfLines());
-    ba.writeStopsAndLines("nova_lajn.txt");
-/*TODO write some test
+    ba.getBusLineByNum(39).addStop(1, *nova, 5, 3);
+    ASSERT_EQ("Cintorin Slavicie -5-> Nova Zastavka -3-> Televizia -7-> Zoo -6-> Lanfranconi -10-> Kralovske udolie -4-> Chatam sofer -13-> Zochova", ba.getBusLineByNum(39).getStopsString());
+    ASSERT_EQ("39,35,29,40", ba.getBusStopById(9).getBSlines());
+    ASSERT_EQ("40", ba.getBusStopById(16).getBSlines());
+//    ba.writeStopsAndLines("nova_lajn.txt");
 }
+

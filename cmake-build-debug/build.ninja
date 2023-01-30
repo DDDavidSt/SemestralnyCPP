@@ -77,6 +77,13 @@ build CMakeFiles/Projekt.dir/PTNetwork.cpp.o: CXX_COMPILER__Projekt_Debug /home/
   OBJECT_DIR = CMakeFiles/Projekt.dir
   OBJECT_FILE_DIR = CMakeFiles/Projekt.dir
 
+build CMakeFiles/Projekt.dir/BFSNetwork.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/BFSNetwork.cpp || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/BFSNetwork.cpp.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir
+
 build CMakeFiles/Projekt.dir/TestBusLine.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/TestBusLine.cpp || cmake_object_order_depends_target_Projekt
   DEP_FILE = CMakeFiles/Projekt.dir/TestBusLine.cpp.o.d
   FLAGS = -g -std=gnu++14
@@ -93,6 +100,13 @@ build CMakeFiles/Projekt.dir/TestSideClassesAndBusStop.cpp.o: CXX_COMPILER__Proj
 
 build CMakeFiles/Projekt.dir/TestNetwork.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/TestNetwork.cpp || cmake_object_order_depends_target_Projekt
   DEP_FILE = CMakeFiles/Projekt.dir/TestNetwork.cpp.o.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
+  OBJECT_DIR = CMakeFiles/Projekt.dir
+  OBJECT_FILE_DIR = CMakeFiles/Projekt.dir
+
+build CMakeFiles/Projekt.dir/TestBFSNetwork.cpp.o: CXX_COMPILER__Projekt_Debug /home/david/Desktop/vyska/2.ZS$ 2022/cpp/Projekt/TestBFSNetwork.cpp || cmake_object_order_depends_target_Projekt
+  DEP_FILE = CMakeFiles/Projekt.dir/TestBFSNetwork.cpp.o.d
   FLAGS = -g -std=gnu++14
   INCLUDES = -I"/home/david/Desktop/vyska/2.ZS 2022/cpp/Projekt/GoogleTest"
   OBJECT_DIR = CMakeFiles/Projekt.dir
@@ -162,7 +176,7 @@ build CMakeFiles/Projekt.dir/GoogleTest/gtest_main.cc.o: CXX_COMPILER__Projekt_D
 #############################################
 # Link the executable Projekt
 
-build Projekt: CXX_EXECUTABLE_LINKER__Projekt_Debug CMakeFiles/Projekt.dir/side_classes.cpp.o CMakeFiles/Projekt.dir/BusStop.cpp.o CMakeFiles/Projekt.dir/BusLine.cpp.o CMakeFiles/Projekt.dir/PTNetwork.cpp.o CMakeFiles/Projekt.dir/TestBusLine.cpp.o CMakeFiles/Projekt.dir/TestSideClassesAndBusStop.cpp.o CMakeFiles/Projekt.dir/TestNetwork.cpp.o CMakeFiles/Projekt.dir/GoogleTest/gtest-death-test.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-filepath.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-port.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-printers.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-test-part.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-typed-test.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest_main.cc.o
+build Projekt: CXX_EXECUTABLE_LINKER__Projekt_Debug CMakeFiles/Projekt.dir/side_classes.cpp.o CMakeFiles/Projekt.dir/BusStop.cpp.o CMakeFiles/Projekt.dir/BusLine.cpp.o CMakeFiles/Projekt.dir/PTNetwork.cpp.o CMakeFiles/Projekt.dir/BFSNetwork.cpp.o CMakeFiles/Projekt.dir/TestBusLine.cpp.o CMakeFiles/Projekt.dir/TestSideClassesAndBusStop.cpp.o CMakeFiles/Projekt.dir/TestNetwork.cpp.o CMakeFiles/Projekt.dir/TestBFSNetwork.cpp.o CMakeFiles/Projekt.dir/GoogleTest/gtest-death-test.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-filepath.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-port.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-printers.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-test-part.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest-typed-test.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest.cc.o CMakeFiles/Projekt.dir/GoogleTest/gtest_main.cc.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/Projekt.dir
   POST_BUILD = :

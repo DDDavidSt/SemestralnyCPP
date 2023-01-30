@@ -53,23 +53,23 @@ TEST(TestBusLine, AddStops) {
     tridevat.addStop(-1, lanf, 13, 0);
     tridevat.addStop(-1, kralud, 6, 0);
     ASSERT_EQ("Cintorin Slavicie -10-> Zoo -13-> Lanfranconi -6-> Kralovske udolie", tridevat.getStopsString());
-    ASSERT_EQ("Kralovske udolie", tridevat.getLastStop().getName());
+    ASSERT_EQ("Kralovske udolie", tridevat.getLastStop()->getName());
     tridevat.changeDirection(0);
     ASSERT_EQ("Cintorin Slavicie <-10-> Zoo <-13-> Lanfranconi <-6-> Kralovske udolie", tridevat.getStopsString());
     tridevat.changeDirection(-1);
     ASSERT_EQ("Kralovske udolie -6-> Lanfranconi -13-> Zoo -10-> Cintorin Slavicie", tridevat.getStopsString());
-    ASSERT_EQ("Cintorin Slavicie", tridevat.getLastStop().getName());
+    ASSERT_EQ("Cintorin Slavicie", tridevat.getLastStop()->getName());
 
 
 }
-
+//
 TEST(TestBusLine, RemoveStops) {
     BusLine tridevat(39, BUS,  1);
-    BusStop cminter("Cintorin Slavicie", 1);
-    BusStop zoo("Zoo", 2);
-    BusStop lanf("Lanfranconi", 3);
-    BusStop kralud("Kralovske udolie", 4);
-    BusStop chaso("Chatam Sofer", 5);
+    BusStop &cminter = *new BusStop("Cintorin Slavicie", 1);
+    BusStop &zoo= *new BusStop("Zoo", 2);
+    BusStop &lanf= *new BusStop("Lanfranconi", 3);
+    BusStop &kralud= *new BusStop("Kralovske udolie", 4);
+    BusStop &chaso= *new BusStop("Chatam Sofer", 5);
     tridevat.setIntervalWeekends(40);
     tridevat.setIntervalWorkdays(60);
     ASSERT_FALSE(tridevat.isLineInOrder());

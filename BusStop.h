@@ -28,7 +28,7 @@ public:
     bool addLine(int line_num);
     bool removeLine(int line_num);
     bool changeName(const std::string &new_name);
-    bool changeStopNum(int new_num);
+    bool changeStopNum(int new_num) ;
     int numberOfLines() const {return lines.size();};
     std::string getName() const { return name; };
     int getStopNumber() const {return number; };

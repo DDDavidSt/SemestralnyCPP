@@ -12,7 +12,7 @@ enum Type{BUS, TRAM, METRO};
 
 
 class BusLine{
-    std::vector<std::pair<BusStop, int>> stops;
+    std::vector<std::pair<BusStop*, int>> stops;
     int interval_workdays = -1;
     int interval_weekends = -1;
     int line_num = -1;
@@ -25,7 +25,7 @@ public:
     bool changeDirection(int new_direct);
     bool isLineInOrder() const {return status;};
     std::string getStopsString() const;
-    std::vector<std::pair<BusStop,int>> getStopVector() const { return stops;};
+    std::vector<std::pair<BusStop*,int>> &getStopVector() { return stops;};
     bool changeStatus(); //cannot change if some of the variables is negative or not initialized except for stops
     bool setIntervalWorkdays(int work_int);
     bool setIntervalWeekends(int wknd_int);
@@ -36,8 +36,9 @@ public:
     Type getLineType() const {return type;};
     int getIntervalWorkdays() const {return interval_workdays;};
     int getIntervalWeekends() const{return interval_weekends;};
-    BusStop getLastStop() const {return stops.back().first;};
-    bool addStop(int position, BusStop &new_stop, int mins_from_prev, int mins_from_next) ; //inserts a new stop at the postion in vector
+    BusStop* getLastStop() const {return stops.back().first;};
+    BusStop* getFirstStop() const {return stops.front().first;};
+    bool addStop(int position, BusStop &new_stop, int mins_from_prev, int mins_to_next) ; //inserts a new stop at the postion in vector
     bool removeStop(BusStop &stop_rem, int mins_prev_to_next = -1); //if mins_prev_to_next not sepcified then just uses sum of the neighbouring elements around stop_rem
     std::vector<std::pair<BusStop, Time>> getEarliestFromStop(BusStop &start, BusStop &dest, Time &time, bool weekend=false);//return vector of stops and their scheduled departure
     std::string getEarliestFromStopString(BusStop &start, BusStop &dest, Time &time, bool weekend=false);
