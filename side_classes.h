@@ -32,7 +32,7 @@ class Time{
     int hours = 0;
     int minutes = 0;
 public:
-    Time();
+    Time(): hours(0), minutes(0){};
     Time(int hours0, int minutes0);
     explicit Time(std::string& time);
     bool setTime(int hours0, int minutes0);

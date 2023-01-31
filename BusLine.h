@@ -18,11 +18,14 @@ class BusLine{
     int line_num = -1;
     bool status = false;
     Type type;
-public:
     int direction = 0; //which stop is a starting point (-1 last one to first one, 1 => first to last in stops list, 0 => both ways)
+
+public:
+    BusLine():line_num(-1), direction(-2){};
     BusLine(int number, enum Type type0, int direct=1);
     BusLine(int number,  enum Type type0, int workdays_interval, int weekends_interval,int direct = 1);
     bool changeDirection(int new_direct);
+    int getDirection(){return direction;};
     bool isLineInOrder() const {return status;};
     std::string getStopsString() const;
     std::vector<std::pair<BusStop*,int>> &getStopVector() { return stops;};
@@ -37,11 +40,11 @@ public:
     int getIntervalWorkdays() const {return interval_workdays;};
     int getIntervalWeekends() const{return interval_weekends;};
     BusStop* getLastStop() const {return stops.back().first;};
+
     BusStop* getFirstStop() const {return stops.front().first;};
     bool addStop(int position, BusStop &new_stop, int mins_from_prev, int mins_to_next) ; //inserts a new stop at the postion in vector
     bool removeStop(BusStop &stop_rem, int mins_prev_to_next = -1); //if mins_prev_to_next not sepcified then just uses sum of the neighbouring elements around stop_rem
     std::vector<std::pair<BusStop, Time>> getEarliestFromStop(BusStop &start, BusStop &dest, Time &time, bool weekend=false);//return vector of stops and their scheduled departure
     std::string getEarliestFromStopString(BusStop &start, BusStop &dest, Time &time, bool weekend=false);
 
-    BusLine():line_num(-1), direction(-1){};
 };

@@ -27,7 +27,7 @@ BusStop::BusStop(const std::string& stop_name, int num) {
 
 std::string BusStop::getBSlines() const{
     /*
-     * return a string of lines : <lineNum>, <lineNum>, ...
+     * return a string of lines : <lineNum>,<lineNum>, ...
      */
     std::string res;
     for(int i: lines){

@@ -10,16 +10,16 @@ using namespace std;
 PTNetwork::~PTNetwork() {
     busstops.clear();
     buslines.clear();
-    admin_psk = "";
+//    admin_psk = "";
 }
 
-bool PTNetwork::changePsk(std::string &old_psk, std::string &new_psk) {
-    if(old_psk == admin_psk){
-        admin_psk = new_psk;
-        return true;
-    }
-    return false;
-}
+//bool PTNetwork::changePsk(std::string &old_psk, std::string &new_psk) {
+//    if(old_psk == admin_psk){
+//        admin_psk = new_psk;
+//        return true;
+//    }
+//    return false;
+//}
 
 int PTNetwork::addStop(BusStop *new_stop) {
     /*
@@ -142,8 +142,6 @@ std::string PTNetwork::getClosestFromStopString(BusStop &stop, Time time1, Time 
 
 void PTNetwork::readStopsAndLines(const std::string& file){
     /* reads a file in following format:
-     * <admin password>
-     *
      * <StopNumber>;<StopName>
      * ...
      * empty line
@@ -155,10 +153,10 @@ void PTNetwork::readStopsAndLines(const std::string& file){
     std::ifstream ss(file);
     std::vector<BusLine> lines;
     std::string line;
-    std::string psk;
-    std::getline(ss, psk);
-    admin_psk = psk;
-    std::getline(ss, line);
+//    std::string psk;
+//    std::getline(ss, psk);
+//    admin_psk = psk;
+//    std::getline(ss, line);
     while (std::getline(ss,line) && !line.empty()){
         int StopNum;
         std::string stopName;
@@ -166,7 +164,10 @@ void PTNetwork::readStopsAndLines(const std::string& file){
         stopName = line.substr(line.find(';') + 1, line.size()-1);
         BusStop stop(stopName, StopNum);
         if(busstops.find(StopNum) == busstops.end()) {
-            busstops[StopNum] = stop;
+            addStop(&stop);
+            if(stop.getStopNumber() != StopNum){
+                throw Exception("Multiple Bus Stop name definition in file " + file + " on stop " + stop.getName());
+            }
         }else{
             clearAll();
             throw Exception("Multiple Bus Stop number definition in file " + file + " on stop number " + std::to_string(StopNum));
@@ -197,6 +198,7 @@ void PTNetwork::readStopsAndLines(const std::string& file){
                 what_type = METRO;
                 break;
             default:
+                clearAll();
                 throw Exception("Bus Line " + std::to_string(info[0]) + " must be within range 0-2 representing Bus, Tram, Metro respectively");
         }
 
@@ -259,13 +261,13 @@ void PTNetwork::writeStopsAndLines(const std::string &file) {
     */
     ofstream output;
     output.open(file);
-    output << admin_psk << endl << endl;
+//    output << admin_psk << endl << endl;
     for(std::pair<int, BusStop> i:busstops){
         output << i.first << ";" << i.second.getName() << endl;
     }
     output << endl;
     for(std::pair<int, BusLine> line:buslines){
-        output << line.second.getLineNum() << ";" << line.second.getIntervalWorkdays() << ";" << line.second.getIntervalWeekends() << ";" << line.second.isLineInOrder() << ";" << line.second.direction << ";" << line.second.getLineType() << endl;
+        output << line.second.getLineNum() << ";" << line.second.getIntervalWorkdays() << ";" << line.second.getIntervalWeekends() << ";" << line.second.isLineInOrder() << ";" << line.second.getDirection() << ";" << line.second.getLineType() << endl;
         Time diff;
         output << line.second.getStopVector().begin()->first->getStopNumber();
         for(auto it = line.second.getStopVector().begin() + 1; it != line.second.getStopVector().end(); ++it){

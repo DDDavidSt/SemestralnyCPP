@@ -1,5 +1,3 @@
-mamamaemu
-
 1;Dobrovicova
 2;Safarikovo namestie
 3;Jesenskeho

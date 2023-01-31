@@ -13,7 +13,7 @@ BusLine::BusLine(int number, Type type1, int direct) {
         throw Exception(WrongBusLineNumber);
     }
     if(direct != 0 && direct != 1 && direct != -1){
-        throw Exception("Unknown direction - use values -1,0,1 only!");
+        throw Exception(WrongDirection);
     }
     line_num = number;
     direction = direct;
@@ -48,6 +48,9 @@ bool BusLine::changeDirection(int new_direct) {
     if(new_direct != -1 && new_direct != 0 && new_direct != 1){
         throw Exception(WrongDirection);
     }
+    if(new_direct == direction){
+        return false;
+    }
     if(new_direct != direction && new_direct != 0){
         std::vector<std::pair<BusStop*, int>> stops_reversed;
         auto it = stops.end()-1;
@@ -58,16 +61,17 @@ bool BusLine::changeDirection(int new_direct) {
         }
         stops = std::move(stops_reversed);
     }
+
     direction = new_direct;
 
-    return true;
+    return false;
 }
 
 bool BusLine::changeStatus() {
     /*
      * switches the current status - to working only when correct variables are set (intervals, line number...)
      */
-    if(line_num > 0 && interval_weekends != -1 && interval_workdays != -1){
+    if(line_num > 0 && interval_weekends > 0 && interval_workdays > 0){
         if(!status){
             status = true;
             return true;
@@ -218,6 +222,19 @@ std::vector<std::pair<BusStop, Time>> BusLine::getEarliestFromStop(BusStop &star
         if(time.getTimePair().first == 23 && (fromOrigToStart + interval).getTimePair().first == 0 ){
             time.setTime(0,0);
         }
+
+
+        auto it = stops.begin();
+        if(*it->first == start){
+            result.push_back(std::make_pair(start,fromOrigToStart));
+            return result;
+        }
+        Time delta;
+        for (; it != stops.end() && (it)->first != &dest; ++it) {
+
+            delta.setTime((it + 1)->second / 60, (it + 1)->second % 60);
+            fromOrigToStart += delta;
+        }
         while (fromOrigToStart < time) {
             fromOrigToStart += interval;
         }
@@ -281,6 +298,9 @@ std::vector<std::pair<BusStop, Time>> BusLine::getEarliestFromStop(BusStop &star
             changeDirection(0);
             throw Exception("Given start point is not in Line number " + std::to_string(line_num));
         }
+        if(time.getTimePair().first == 23 && (fromOrigToStart + interval).getTimePair().first == 0 ){
+            time.setTime(0,0);
+        }
         while (fromOrigToStart < time) {
             fromOrigToStart += interval;
         }
@@ -298,6 +318,9 @@ std::vector<std::pair<BusStop, Time>> BusLine::getEarliestFromStop(BusStop &star
     }
     if(it == stops.end()){
         throw Exception("Given start point is not in Line number " + std::to_string(line_num));
+    }
+    if(time.getTimePair().first == 23 && (fromOrigToStart + interval).getTimePair().first == 0 ){
+        time.setTime(0,0);
     }
     while (fromOrigToStart < time) {
         fromOrigToStart += interval;

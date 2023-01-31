@@ -73,6 +73,9 @@ TEST(TestBFSNetwork, FindShortestRoute){
     ba.getBusLineByNum(35).changeStatus();
     ASSERT_TRUE(ba.getBusLineByNum(35).isLineInOrder());
 
+//    Time when(0,0);
+//    ASSERT_EQ(result, ba.findShortestPath(ba.getBusStopById(9), ba.getBusStopById(15), when));
+
     result = { {7, 35}, {13, 39}, {14, 39}, {15, 0} };
     ASSERT_EQ(result, ba.findShortestPath(ba.getBusStopById(7), ba.getBusStopById(15)));
     result = {};
@@ -94,18 +97,26 @@ TEST(TestBFSNetwork, FindShortestNasty){
     ba.getBusLineByNum(35).changeStatus();
     result = { {2, 29}, {5, 35}, {10, 0} };
     ASSERT_EQ(result, ba.findShortestPath(ba.getBusStopById(2), ba.getBusStopById(10)));
+    result = {};
+    ASSERT_EQ(result, ba.findShortestPath(ba.getBusStopById(14), ba.getBusStopById(7)));
+    ba.getBusLineByNum(4).changeDirection(-1);
+    result = {{14,4}, {7,0}};
+    ASSERT_EQ(result, ba.findShortestPath(ba.getBusStopById(14), ba.getBusStopById(7)));
+
 }
 
 TEST(TestBFSNetwork, GetRoute){
     PTNetwork ba;
     ba.readStopsAndLines("read_from_me.txt");
     Time cas(0,0);
-    ASSERT_EQ("39: (00:00)Cintorin Slavicie -00:06-> (00:06)Televizia -00:07-> (00:13)Zoo -00:06-> (00:19)Lanfranconi -00:10-> (00:29)Kralovske udolie -00:04-> (00:33)Chatam sofer -00:13-> (00:46)Zochova"
+    ASSERT_EQ("(time length: 00:46) 39(BUS): (00:00)Cintorin Slavicie -00:06-> (00:06)Televizia -00:07-> (00:13)Zoo -00:06-> (00:19)Lanfranconi -00:10-> (00:29)Kralovske udolie -00:04-> (00:33)Chatam sofer -00:13-> (00:46)Zochova"
     , ba.getRoute(ba.getBusStopById(9), ba.getBusStopById(15), cas));
     ASSERT_EQ("00:00", cas.getTime());
     ba.getBusLineByNum(35).changeStatus();
-    ASSERT_EQ("35: (01:14)Cintorin Slavicie -00:19-> (01:33)Chatam sofer /-prestup- 39 -/ (01:33)Chatam sofer -00:13-> (01:46)Zochova"
+    ASSERT_TRUE(ba.getBusLineByNum(35).isLineInOrder());
+    ASSERT_EQ("(time length: 00:32) 35(BUS): (01:14)Cintorin Slavicie -00:19-> (01:33)Chatam sofer /-prestup- 39(BUS) -/ (01:33)Chatam sofer -00:13-> (01:46)Zochova"
     , ba.getRoute(ba.getBusStopById(9), ba.getBusStopById(15), cas));
+
     ASSERT_EQ("No path from Zochova to Zochova"
     , ba.getRoute(ba.getBusStopById(15), ba.getBusStopById(15), cas));
     ASSERT_EQ("No path from Dobrovicova to Zochova"
@@ -115,12 +126,35 @@ TEST(TestBFSNetwork, GetRoute){
 
     cas.setTime(13,42);
 
-    ASSERT_EQ("39: (13:59)Lanfranconi -00:10-> (14:09)Kralovske udolie -00:04-> (14:13)Chatam sofer -00:13-> (14:26)Zochova", ba.getRoute(ba.getBusStopById(12), ba.getBusStopById(15),cas));
+    ASSERT_EQ( "(time length: 00:27) 39(BUS): (13:59)Lanfranconi -00:10-> (14:09)Kralovske udolie -00:04-> (14:13)Chatam sofer -00:13-> (14:26)Zochova"
+    , ba.getRoute(ba.getBusStopById(12), ba.getBusStopById(15),cas));
 
     cas.setTime(23,45);
 
-    ASSERT_EQ("35: (23:48)Most SNP -00:03-> (23:51)Kralovske udolie /-prestup- 39 -/ (00:29)Kralovske udolie -00:04-> (00:33)Chatam sofer -00:13-> (00:46)Zochova",
+    ASSERT_EQ("(time length: 00:58) 35(BUS): (23:48)Most SNP -00:03-> (23:51)Kralovske udolie /-prestup- 39(BUS) -/ (00:29)Kralovske udolie -00:04-> (00:33)Chatam sofer -00:13-> (00:46)Zochova"
+    ,
               ba.getRoute(ba.getBusStopById(7), ba.getBusStopById(15),cas));
+    ASSERT_EQ("(time length: 00:28) 29(METRO): (00:00)Holicska -00:04-> (00:04)SND -00:07-> (00:11)Safarikovo namestie /-prestup- 4(TRAM) -/ (00:13)Safarikovo namestie -00:15-> (00:28)Nameste L.Stura"
+    ,ba.getRoute(ba.getBusStopById(6), ba.getBusStopById(8),cas));
 
+    cas.setTime(14,54);
+    ASSERT_EQ("(time length: 00:38) 29(METRO): (15:00)Holicska -00:04-> (15:04)SND -00:07-> (15:11)Safarikovo namestie /-prestup- 4(TRAM) -/ (15:23)Safarikovo namestie -00:15-> (15:38)Nameste L.Stura"
+    ,ba.getRoute(ba.getBusStopById(6), ba.getBusStopById(8),cas));
 
+}
+
+TEST(TestBFSNetwork, miniBA){
+    PTNetwork mini;
+    mini.readStopsAndLines("miniBA.txt");
+    Time cas(14,0);
+    ASSERT_EQ("(time length: 00:06) 59(TRAM): (14:15)Hlavna stanica -00:02-> (14:17)Chatam sofer /-prestup- 20(BUS) -/ (14:17)Chatam sofer -00:01-> (14:18)Kralovske udolie -00:03-> (14:21)Cintorin Slavicie"
+    , mini.getRoute(mini.getBusStopById(16), mini.getBusStopById(9), cas));
+    mini.getBusLineByNum(35).changeStatus();
+    ASSERT_TRUE(mini.getBusLineByNum(35).isLineInOrder());
+    cas.setTime(22,0);
+    ASSERT_EQ("(time length: 00:07) 1(TRAM): (22:06)Urad vlady SR -00:02-> (22:08)STU -00:01-> (22:09)Vysoka -00:02-> (22:11)Postova -00:02-> (22:13)Centrum",
+              mini.getRoute(mini.getBusStopById(18), mini.getBusStopById(22),cas));
+    ASSERT_EQ("(time length: 00:19) 20(BUS): (22:00)Dobrovicova -00:02-> (22:02)Safarikovo namestie /-prestup- 1(TRAM) -/ (22:04)Safarikovo namestie -00:02-> (22:06)Centrum /-prestup- 59(TRAM) -/ (22:09)Centrum -00:04-> (22:13)Kralovske udolie /-prestup- 35(BUS) -/ (22:21)Kralovske udolie -00:12-> (22:33)Lanfranconi"
+    ,mini.getRoute(mini.getBusStopById(1), mini.getBusStopById(12),cas));
+    ASSERT_EQ("(time length: 00:32) 33(TRAM): (22:08)SND -00:02-> (22:10)Centrum /-prestup- 59(TRAM) -/ (22:29)Centrum -00:04-> (22:33)Kralovske udolie /-prestup- 33(TRAM) -/ (22:39)Kralovske udolie -00:01-> (22:40)Hlavna stanica",mini.getRoute(mini.getBusStopById(5), mini.getBusStopById(16),cas));
 }

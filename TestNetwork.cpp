@@ -17,6 +17,11 @@ using namespace ::testing;
 TEST(TestNetwork, ReadFromFIle){
     PTNetwork bratislava;
     bratislava.readStopsAndLines("read_from_me.txt");
+
+    PTNetwork baba;
+    baba.addLine(bratislava.getBusLineByNum(39));
+    ASSERT_EQ(39,baba.getBusLineByNum(39).getLineNum());
+
     ASSERT_EQ(15, bratislava.getNumberOfStops());
     ASSERT_EQ(4, bratislava.getNumberOfLines());
     ASSERT_TRUE(bratislava.getBusLineByNum(39).isLineInOrder());
@@ -69,6 +74,7 @@ TEST(TestNetwork, Nasty){
     }catch (Exception &e){
         ASSERT_EQ("Line 35 currently not in order", e.message());
     }
+
 }
 
 TEST(TestNetwork, NastyFile){
@@ -93,8 +99,21 @@ TEST(TestNetwork, NastyMultiBusStopsAndLines){
     }catch (Exception &e){
         ASSERT_EQ("Multiple Bus Line number definition in file rfm_multi_lines_num.txt on Bus Line number 39", e.message());
     }
-}
+    try{
+        bratislava_zla.readStopsAndLines("rfm_multiple_names.txt");
+    }catch (Exception &e){
+        ASSERT_EQ( "Multiple Bus Stop name definition in file rfm_multiple_names.txt on stop Zochova", e.message());
+    }
 
+}
+TEST(TestNetwork, NastyOutsideType) {
+    PTNetwork bratislava_zla;
+    try{
+        bratislava_zla.readStopsAndLines("rfm_outside_type.txt");
+    }catch (Exception &e){
+        ASSERT_EQ("Bus Line 39 must be within range 0-2 representing Bus, Tram, Metro respectively", e.message());
+    }
+}
 TEST(TestNetwork, NoLines){
     PTNetwork ba_without_lines;
     ba_without_lines.readStopsAndLines("rfm_no_lines.txt");
@@ -129,7 +148,7 @@ TEST(TestNetwork, EarliestConn){
 TEST(TestNetwork, TimeTableForStop){
     PTNetwork blava;
     blava.readStopsAndLines("read_from_me.txt");
-    ASSERT_EQ("============-39-SMER-Zochova-============\n   Cintorin Slavicie -6-> Televizia -7-> Zoo -6-> Lanfranconi -10-> Kralovske udolie -4-> Chatam sofer -13-> Zochova\n   Pondelok az piatok:\n   0| 0 20 40 \n   1| 0 20 40 \n   2| 0 20 40 \n   3| 0 20 40 \n   4| 0 20 40 \n   5| 0 20 40 \n   6| 0 20 40 \n   7| 0 20 40 \n   8| 0 20 40 \n   9| 0 20 40 \n   10| 0 20 40 \n   11| 0 20 40 \n   12| 0 20 40 \n   13| 0 20 40 \n   14| 0 20 40 \n   15| 0 20 40 \n   16| 0 20 40 \n   17| 0 20 40 \n   18| 0 20 40 \n   19| 0 20 40 \n   20| 0 20 40 \n   21| 0 20 40 \n   22| 0 20 40 \n   23| 0 20 40 \n   Vikendy:\n   0| 0 22 44 \n   1| 6 28 50 \n   2| 12 34 56 \n   3| 18 40 \n   4| 2 24 46 \n   5| 8 30 52 \n   6| 14 36 58 \n   7| 20 42 \n   8| 4 26 48 \n   9| 10 32 54 \n   10| 16 38 \n   11| 0 22 44 \n   12| 6 28 50 \n   13| 12 34 56 \n   14| 18 40 \n   15| 2 24 46 \n   16| 8 30 52 \n   17| 14 36 58 \n   18| 20 42 \n   19| 4 26 48 \n   20| 10 32 54 \n   21| 16 38 \n   22| 0 22 44 \n   23| 6 28 50 \n\n============-35-SMER-Chatam sofer-============\n   Holicska -16-> Mala scena -3-> SND -12-> Televizia -11-> Most SNP -3-> Kralovske udolie -12-> Lanfranconi -17-> Cintorin Slavicie -19-> Chatam sofer\n   Linka momentalne mimo prevadzky\n============-29-SMER-Cintorin Slavicie-============\n   Holicska <-4-> SND <-7-> Safarikovo namestie <-5-> Most SNP <-10-> Mala scena <-13-> Jesenskeho <-9-> Cintorin Slavicie\n   Pondelok az piatok:\n   0| 0 30 \n   1| 0 30 \n   2| 0 30 \n   3| 0 30 \n   4| 0 30 \n   5| 0 30 \n   6| 0 30 \n   7| 0 30 \n   8| 0 30 \n   9| 0 30 \n   10| 0 30 \n   11| 0 30 \n   12| 0 30 \n   13| 0 30 \n   14| 0 30 \n   15| 0 30 \n   16| 0 30 \n   17| 0 30 \n   18| 0 30 \n   19| 0 30 \n   20| 0 30 \n   21| 0 30 \n   22| 0 30 \n   23| 0 30 \n   Vikendy:\n   0| 0 \n   1| 0 \n   2| 0 \n   3| 0 \n   4| 0 \n   5| 0 \n   6| 0 \n   7| 0 \n   8| 0 \n   9| 0 \n   10| 0 \n   11| 0 \n   12| 0 \n   13| 0 \n   14| 0 \n   15| 0 \n   16| 0 \n   17| 0 \n   18| 0 \n   19| 0 \n   20| 0 \n   21| 0 \n   22| 0 \n   23| 0 \n\n"
+    ASSERT_EQ("============-39-SMER-Zochova-============\n   Cintorin Slavicie -6-> Televizia -7-> Zoo -6-> Lanfranconi -10-> Kralovske udolie -4-> Chatam sofer -13-> Zochova\n   Pondelok az piatok:\n   0| 0 20 40 \n   1| 0 20 40 \n   2| 0 20 40 \n   3| 0 20 40 \n   4| 0 20 40 \n   5| 0 20 40 \n   6| 0 20 40 \n   7| 0 20 40 \n   8| 0 20 40 \n   9| 0 20 40 \n   10| 0 20 40 \n   11| 0 20 40 \n   12| 0 20 40 \n   13| 0 20 40 \n   14| 0 20 40 \n   15| 0 20 40 \n   16| 0 20 40 \n   17| 0 20 40 \n   18| 0 20 40 \n   19| 0 20 40 \n   20| 0 20 40 \n   21| 0 20 40 \n   22| 0 20 40 \n   23| 0 20 40 \n   Vikendy:\n   0| 0 22 44 \n   1| 6 28 50 \n   2| 12 34 56 \n   3| 18 40 \n   4| 2 24 46 \n   5| 8 30 52 \n   6| 14 36 58 \n   7| 20 42 \n   8| 4 26 48 \n   9| 10 32 54 \n   10| 16 38 \n   11| 0 22 44 \n   12| 6 28 50 \n   13| 12 34 56 \n   14| 18 40 \n   15| 2 24 46 \n   16| 8 30 52 \n   17| 14 36 58 \n   18| 20 42 \n   19| 4 26 48 \n   20| 10 32 54 \n   21| 16 38 \n   22| 0 22 44 \n   23| 6 28 50 \n\n============-35-SMER-Chatam sofer-============\n   Holicska -16-> Mala scena -3-> SND -12-> Televizia -11-> Most SNP -3-> Kralovske udolie -12-> Lanfranconi -17-> Cintorin Slavicie -19-> Chatam sofer\n   Linka momentalne mimo prevadzky\n============-29-SMER-Cintorin Slavicie-============\n   Holicska <-4-> SND <-7-> Safarikovo namestie <-5-> Most SNP <-10-> Mala scena <-13-> Jesenskeho <-9-> Cintorin Slavicie\n   Pondelok az piatok:\n   0| 48 \n   1| 18 48 \n   2| 18 48 \n   3| 18 48 \n   4| 18 48 \n   5| 18 48 \n   6| 18 48 \n   7| 18 48 \n   8| 18 48 \n   9| 18 48 \n   10| 18 48 \n   11| 18 48 \n   12| 18 48 \n   13| 18 48 \n   14| 18 48 \n   15| 18 48 \n   16| 18 48 \n   17| 18 48 \n   18| 18 48 \n   19| 18 48 \n   20| 18 48 \n   21| 18 48 \n   22| 18 48 \n   23| 18 48 \n   Vikendy:\n   0| 48 \n   1| 48 \n   2| 48 \n   3| 48 \n   4| 48 \n   5| 48 \n   6| 48 \n   7| 48 \n   8| 48 \n   9| 48 \n   10| 48 \n   11| 48 \n   12| 48 \n   13| 48 \n   14| 48 \n   15| 48 \n   16| 48 \n   17| 48 \n   18| 48 \n   19| 48 \n   20| 48 \n   21| 48 \n   22| 48 \n   23| 48 \n\n"
     , blava.getTimeTableForStop(blava.getBusStopById(9)));
     ASSERT_EQ("============-35-SMER-Chatam sofer-============\n   Holicska -16-> Mala scena -3-> SND -12-> Televizia -11-> Most SNP -3-> Kralovske udolie -12-> Lanfranconi -17-> Cintorin Slavicie -19-> Chatam sofer\n   Linka momentalne mimo prevadzky\n============-29-SMER-Cintorin Slavicie-============\n   Holicska <-4-> SND <-7-> Safarikovo namestie <-5-> Most SNP <-10-> Mala scena <-13-> Jesenskeho <-9-> Cintorin Slavicie\n   Pondelok az piatok:\n   0| 26 56 \n   1| 26 56 \n   2| 26 56 \n   3| 26 56 \n   4| 26 56 \n   5| 26 56 \n   6| 26 56 \n   7| 26 56 \n   8| 26 56 \n   9| 26 56 \n   10| 26 56 \n   11| 26 56 \n   12| 26 56 \n   13| 26 56 \n   14| 26 56 \n   15| 26 56 \n   16| 26 56 \n   17| 26 56 \n   18| 26 56 \n   19| 26 56 \n   20| 26 56 \n   21| 26 56 \n   22| 26 56 \n   23| 26 56 \n   Vikendy:\n   0| 26 \n   1| 26 \n   2| 26 \n   3| 26 \n   4| 26 \n   5| 26 \n   6| 26 \n   7| 26 \n   8| 26 \n   9| 26 \n   10| 26 \n   11| 26 \n   12| 26 \n   13| 26 \n   14| 26 \n   15| 26 \n   16| 26 \n   17| 26 \n   18| 26 \n   19| 26 \n   20| 26 \n   21| 26 \n   22| 26 \n   23| 26 \n\n"
     , blava.getTimeTableForStop(blava.getBusStopById(4)));

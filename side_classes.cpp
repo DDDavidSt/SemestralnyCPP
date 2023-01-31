@@ -5,10 +5,6 @@
 #include <iomanip>
 #include <sstream>
 
-Time::Time(){
-    hours = 0;
-    minutes = 0;
-}
 bool isTimeOK(int hours,int minutes){
     if (hours < 0 || hours >= 24 || minutes < 0 || minutes >= 60) {
         return false;
@@ -33,9 +29,11 @@ bool Time::setTime(int hours0, int minutes0){
     if (!isTimeOK(hours0, minutes0)) {
         hours = 0;
         minutes = 0;
+        return false;
     } else {
         hours = hours0;
         minutes = minutes0;
+        return true;
     }
 }
 std::string Time::getTime() const {
