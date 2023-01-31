@@ -91,91 +91,49 @@ std::vector<pair<int,int>> PTNetwork::findShortestPath(BusStop &start, BusStop &
     return path;
 }
 
-std::vector<pair<int,int>> PTNetwork::findShortestPath2(BusStop &start, BusStop &dest){
-    /*
- * finds shortest path using Dijkstra's algorithm
- */
-    std::map<int,std::vector<std::tuple<int,int,int>>> adjmap = createAdjMap();
-    int inf = 9999;
-    std::map<int, int> distances;
-    for(auto &i:busstops){
-        distances[i.first] = inf;
-    }
-    distances[start.getStopNumber()] = 0;
-    priority_queue<tuple<int, int,int>> pq;
-    pq.push({0, start.getStopNumber(),0});
-    std::map<int,std::pair<int,int>> previous;
-    while(!pq.empty()){
-        tuple<int,int,int> dist_node_line = pq.top();
-        pq.pop();
-        if(get<0>(dist_node_line) > distances[get<1>(dist_node_line)] ){
-            continue;
-        }
-        for(tuple<int,int,int> node_dist_line: adjmap[get<1>(dist_node_line)]){
-            int distance = get<0>(dist_node_line) + std::get<1>(node_dist_line);
-            if(distance < distances[std::get<0>(node_dist_line)]){
-                distances[std::get<0>(node_dist_line)] = distance;
-                previous[std::get<0>(node_dist_line)] = {get<1>(dist_node_line), std::get<2>(node_dist_line)};
-                if(distances[get<1>(dist_node_line)] == 9999){
-                    pq.push({distance, std::get<0>(node_dist_line), get<2>(node_dist_line)});
-                }
-            }
-        }
-    }
-    std::vector<std::pair<int,int>> path;
-    if(previous.empty() || previous.find(dest.getStopNumber()) == previous.end() ){
-        return path;
-    }
-    path.emplace_back(dest.getStopNumber(),0);
-    while((path.end()-1)->first != start.getStopNumber()){
-        path.push_back(previous[(path.end()-1)->first]);
-    }
-    reverse(path.begin(), path.end());
-    return path;
-}
 
-std::vector<pair<int,int>> PTNetwork::findShortestPath(BusStop &start, BusStop &dest, Time when){
-    /*
-     * finds shortest path using Dijkstra's algorithm
-     */
-    std::map<int,std::vector<std::tuple<int,int,int>>> adjmap = createAdjMap();
-    int inf = 600;
-    std::map<int, int> distances;
-    for(auto &i:busstops){
-        distances[i.first] = inf;
-    }
-    distances[start.getStopNumber()] = 0;
-    priority_queue<tuple<int, int,int>> pq;
-    pq.push({0, start.getStopNumber(),0});
-    std::map<int,std::pair<int,int>> previous;
-    while(!pq.empty()){
-        tuple<int,int,int> dist_node_line = pq.top();
-        pq.pop();
-        if(get<0>(dist_node_line) > distances[get<1>(dist_node_line)]){
-            continue;
-        }
-        for(tuple<int,int,int> node_dist_line: adjmap[get<1>(dist_node_line)]){
-            Time time_dist = (buslines[std::get<2>(node_dist_line)].getEarliestFromStop(busstops[get<1>(dist_node_line)], busstops[get<0>(node_dist_line)], when).end()-1)->second;
-//            when = time_dist;
-            int distance = get<0>(dist_node_line) + time_dist.getTimePair().first*60 + time_dist.getTimePair().second;
-            if(distance < distances[std::get<0>(node_dist_line)]){
-                distances[std::get<0>(node_dist_line)] = distance;
-                previous[std::get<0>(node_dist_line)] = {get<1>(dist_node_line), std::get<2>(node_dist_line)};
-                pq.push({distance, std::get<0>(node_dist_line), get<2>(node_dist_line)});
-            }
-        }
-    }
-    std::vector<std::pair<int,int>> path;
-    if(previous.empty()){
-        return path;
-    }
-    path.emplace_back(dest.getStopNumber(),0);
-    while((path.end()-1)->first != start.getStopNumber()){
-        path.push_back(previous[(path.end()-1)->first]);
-    }
-    reverse(path.begin(), path.end());
-    return path;
-}
+//std::vector<pair<int,int>> PTNetwork::findShortestPath(BusStop &start, BusStop &dest, Time when){
+//    /*
+//     * finds shortest path using Dijkstra's algorithm
+//     */
+//    std::map<int,std::vector<std::tuple<int,int,int>>> adjmap = createAdjMap();
+//    int inf = 600;
+//    std::map<int, int> distances;
+//    for(auto &i:busstops){
+//        distances[i.first] = inf;
+//    }
+//    distances[start.getStopNumber()] = 0;
+//    priority_queue<tuple<int, int,int>> pq;
+//    pq.push({0, start.getStopNumber(),0});
+//    std::map<int,std::pair<int,int>> previous;
+//    while(!pq.empty()){
+//        tuple<int,int,int> dist_node_line = pq.top();
+//        pq.pop();
+//        if(get<0>(dist_node_line) > distances[get<1>(dist_node_line)]){
+//            continue;
+//        }
+//        for(tuple<int,int,int> node_dist_line: adjmap[get<1>(dist_node_line)]){
+//            Time time_dist = (buslines[std::get<2>(node_dist_line)].getEarliestFromStop(busstops[get<1>(dist_node_line)], busstops[get<0>(node_dist_line)], when).end()-1)->second;
+////            when = time_dist;
+//            int distance = get<0>(dist_node_line) + time_dist.getTimePair().first*60 + time_dist.getTimePair().second;
+//            if(distance < distances[std::get<0>(node_dist_line)]){
+//                distances[std::get<0>(node_dist_line)] = distance;
+//                previous[std::get<0>(node_dist_line)] = {get<1>(dist_node_line), std::get<2>(node_dist_line)};
+//                pq.push({distance, std::get<0>(node_dist_line), get<2>(node_dist_line)});
+//            }
+//        }
+//    }
+//    std::vector<std::pair<int,int>> path;
+//    if(previous.empty()){
+//        return path;
+//    }
+//    path.emplace_back(dest.getStopNumber(),0);
+//    while((path.end()-1)->first != start.getStopNumber()){
+//        path.push_back(previous[(path.end()-1)->first]);
+//    }
+//    reverse(path.begin(), path.end());
+//    return path;
+//}
 
 std::string getStringType(Type type){
     switch (type) {
@@ -190,7 +148,7 @@ std::string getStringType(Type type){
     }
 }
 
-std::string PTNetwork::getRoute(BusStop &start, BusStop &end, Time when) {
+std::string PTNetwork::getRoute(BusStop &start, BusStop &end, Time when, bool weekend) {
     std::string result;
     vector<pair<int,int>> path = findShortestPath(start, end);
     if(path.empty()){
@@ -202,21 +160,21 @@ std::string PTNetwork::getRoute(BusStop &start, BusStop &end, Time when) {
     result += to_string(curline) + "(" + getStringType(buslines[curline].getLineType()) + ")" +  ": ";
     Time curtime = when;
     Time endTime, startTime;
-    startTime = buslines[curline].getEarliestFromStop(busstops[curstart], *buslines[curline].getLastStop(), when).begin()->second;
+    startTime = buslines[curline].getEarliestFromStop(busstops[curstart], *buslines[curline].getLastStop(), when, weekend).begin()->second;
     for(auto &stop:path){
         curend = stop.first;
         if(stop.second != curline){
-            result += buslines[curline].getEarliestFromStopString(busstops[curstart], busstops[curend], curtime);
+            result += buslines[curline].getEarliestFromStopString(busstops[curstart], busstops[curend], curtime,weekend);
             if(stop.second != 0) {
                 result += " /-prestup- " + to_string(stop.second) + "(" + getStringType(buslines[stop.second].getLineType()) + ")" + " -/ ";
             }
-            curtime = (buslines[curline].getEarliestFromStop(busstops[curstart], busstops[curend], curtime).end()-1)->second;
+            curtime = (buslines[curline].getEarliestFromStop(busstops[curstart], busstops[curend], curtime, weekend).end()-1)->second;
             curline = stop.second;
             curstart = stop.first;
         }
     }
     Time jeden(0,1);
     curtime = curtime - jeden;
-    endTime = buslines[(path.end()-2)->second].getEarliestFromStop(busstops[curend], *buslines[(path.end()-2)->second].getLastStop(), curtime).begin()->second;
+    endTime = buslines[(path.end()-2)->second].getEarliestFromStop(busstops[curend], *buslines[(path.end()-2)->second].getLastStop(), curtime, weekend).begin()->second;
     return "(time length: " + (endTime-startTime).getTime() + ") " + result;
 }

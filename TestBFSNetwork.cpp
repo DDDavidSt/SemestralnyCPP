@@ -158,3 +158,20 @@ TEST(TestBFSNetwork, miniBA){
     ,mini.getRoute(mini.getBusStopById(1), mini.getBusStopById(12),cas));
     ASSERT_EQ("(time length: 00:32) 33(TRAM): (22:08)SND -00:02-> (22:10)Centrum /-prestup- 59(TRAM) -/ (22:29)Centrum -00:04-> (22:33)Kralovske udolie /-prestup- 33(TRAM) -/ (22:39)Kralovske udolie -00:01-> (22:40)Hlavna stanica",mini.getRoute(mini.getBusStopById(5), mini.getBusStopById(16),cas));
 }
+
+TEST(TestBFSNetwork, miniBAWeekend){
+    PTNetwork mini;
+    mini.readStopsAndLines("miniBA.txt");
+    Time cas(14,0);
+    ASSERT_EQ("(time length: 00:21) 59(TRAM): (14:30)Hlavna stanica -00:02-> (14:32)Chatam sofer /-prestup- 20(BUS) -/ (14:47)Chatam sofer -00:01-> (14:48)Kralovske udolie -00:03-> (14:51)Cintorin Slavicie"
+    , mini.getRoute(mini.getBusStopById(16), mini.getBusStopById(9), cas, true));
+    mini.getBusLineByNum(35).changeStatus();
+    ASSERT_TRUE(mini.getBusLineByNum(35).isLineInOrder());
+    cas.setTime(22,0);
+    ASSERT_EQ("(time length: 00:07) 1(TRAM): (22:13)Urad vlady SR -00:02-> (22:15)STU -00:01-> (22:16)Vysoka -00:02-> (22:18)Postova -00:02-> (22:20)Centrum"
+    ,mini.getRoute(mini.getBusStopById(18), mini.getBusStopById(22),cas, true));
+    ASSERT_EQ("(time length: 01:02) 20(BUS): (22:00)Dobrovicova -00:02-> (22:02)Safarikovo namestie /-prestup- 1(TRAM) -/ (22:11)Safarikovo namestie -00:02-> (22:13)Centrum /-prestup- 59(TRAM) -/ (22:39)Centrum -00:04-> (22:43)Kralovske udolie /-prestup- 35(BUS) -/ (22:50)Kralovske udolie -00:12-> (23:02)Lanfranconi"
+    ,mini.getRoute(mini.getBusStopById(1), mini.getBusStopById(12),cas, true));
+    ASSERT_EQ("(time length: 00:57) 33(TRAM): (22:08)SND -00:02-> (22:10)Centrum /-prestup- 59(TRAM) -/ (22:39)Centrum -00:04-> (22:43)Kralovske udolie /-prestup- 33(TRAM) -/ (23:04)Kralovske udolie -00:01-> (23:05)Hlavna stanica",
+              mini.getRoute(mini.getBusStopById(5), mini.getBusStopById(16),cas, true));
+}

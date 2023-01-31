@@ -31,11 +31,8 @@ public:
     std::vector<std::tuple<int, int,int>> whereNext(BusStop &from);
     std::map<int,  std::vector<std::tuple<int, int, int>>> createAdjMap();
     std::vector<std::pair<int,int>> findShortestPath(BusStop &start, BusStop &dest);
-    std::vector<std::pair<int,int>> findShortestPath2(BusStop &start, BusStop &dest);
 
-    std::vector<std::pair<int,int>> findShortestPath(BusStop &start, BusStop &dest, Time when);
-
-    std::string getRoute(BusStop &start, BusStop &end, Time when);
+    std::string getRoute(BusStop &start, BusStop &end, Time when, bool weekend=false);
     ~PTNetwork();
     void clearAll();
 };

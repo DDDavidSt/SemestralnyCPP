@@ -222,8 +222,6 @@ std::vector<std::pair<BusStop, Time>> BusLine::getEarliestFromStop(BusStop &star
         if(time.getTimePair().first == 23 && (fromOrigToStart + interval).getTimePair().first == 0 ){
             time.setTime(0,0);
         }
-
-
         auto it = stops.begin();
         if(*it->first == start){
             result.push_back(std::make_pair(start,fromOrigToStart));
