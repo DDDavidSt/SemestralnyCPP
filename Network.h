@@ -30,6 +30,8 @@ public:
     void writeTimeTableForStop(std::string filename, BusStop &stop);
     std::vector<std::tuple<int, int,int>> whereNext(BusStop &from);
     std::map<int,  std::vector<std::tuple<int, int, int>>> createAdjMap();
+    std::vector<std::pair<int,int>> findShortestPath(BusStop &start, BusStop &dest);
+    std::string getRoute(BusStop &start, BusStop &end, Time when);
     ~PTNetwork();
     void clearAll();
 };
