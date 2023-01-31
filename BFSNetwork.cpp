@@ -160,7 +160,7 @@ std::string PTNetwork::getRoute(BusStop &start, BusStop &end, Time when, bool we
     result += to_string(curline) + "(" + getStringType(buslines[curline].getLineType()) + ")" +  ": ";
     Time curtime = when;
     Time endTime, startTime;
-    startTime = buslines[curline].getEarliestFromStop(busstops[curstart], *buslines[curline].getLastStop(), when, weekend).begin()->second;
+    startTime = buslines[curline].getEarliestFromStop(busstops[curstart], busstops[(path.begin()+1)->first], curtime, weekend).begin()->second;
     for(auto &stop:path){
         curend = stop.first;
         if(stop.second != curline){
@@ -173,8 +173,5 @@ std::string PTNetwork::getRoute(BusStop &start, BusStop &end, Time when, bool we
             curstart = stop.first;
         }
     }
-    Time jeden(0,1);
-    curtime = curtime - jeden;
-    endTime = buslines[(path.end()-2)->second].getEarliestFromStop(busstops[curend], *buslines[(path.end()-2)->second].getLastStop(), curtime, weekend).begin()->second;
-    return "(time length: " + (endTime-startTime).getTime() + ") " + result;
+    return "(time length: " + (curtime - startTime).getTime() + ") " + result;
 }

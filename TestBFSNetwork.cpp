@@ -154,7 +154,7 @@ TEST(TestBFSNetwork, miniBA){
     cas.setTime(22,0);
     ASSERT_EQ("(time length: 00:07) 1(TRAM): (22:06)Urad vlady SR -00:02-> (22:08)STU -00:01-> (22:09)Vysoka -00:02-> (22:11)Postova -00:02-> (22:13)Centrum",
               mini.getRoute(mini.getBusStopById(18), mini.getBusStopById(22),cas));
-    ASSERT_EQ("(time length: 00:19) 20(BUS): (22:00)Dobrovicova -00:02-> (22:02)Safarikovo namestie /-prestup- 1(TRAM) -/ (22:04)Safarikovo namestie -00:02-> (22:06)Centrum /-prestup- 59(TRAM) -/ (22:09)Centrum -00:04-> (22:13)Kralovske udolie /-prestup- 35(BUS) -/ (22:21)Kralovske udolie -00:12-> (22:33)Lanfranconi"
+    ASSERT_EQ("(time length: 00:33) 20(BUS): (22:00)Dobrovicova -00:02-> (22:02)Safarikovo namestie /-prestup- 1(TRAM) -/ (22:04)Safarikovo namestie -00:02-> (22:06)Centrum /-prestup- 59(TRAM) -/ (22:09)Centrum -00:04-> (22:13)Kralovske udolie /-prestup- 35(BUS) -/ (22:21)Kralovske udolie -00:12-> (22:33)Lanfranconi"
     ,mini.getRoute(mini.getBusStopById(1), mini.getBusStopById(12),cas));
     ASSERT_EQ("(time length: 00:32) 33(TRAM): (22:08)SND -00:02-> (22:10)Centrum /-prestup- 59(TRAM) -/ (22:29)Centrum -00:04-> (22:33)Kralovske udolie /-prestup- 33(TRAM) -/ (22:39)Kralovske udolie -00:01-> (22:40)Hlavna stanica",mini.getRoute(mini.getBusStopById(5), mini.getBusStopById(16),cas));
 }
